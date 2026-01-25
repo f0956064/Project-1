@@ -4,9 +4,9 @@ namespace App\Helpers;
 /**
  *
  * @package		Captcha
- * @author		Dreamztech Solutions Pvt. Ltd. Team
- * @copyright		Copyright (c) Dreamztech Solutions.
- * @copyright		Copyright (c) Dreamztech Solutions (http://dreamztech.com/)
+ * @author		Laravel Team
+ * @copyright		Copyright (c) Laravel.
+ * @copyright		Copyright (c) Laravel (http://laravel.com/)
  * @since		Version 1.0
  * @DateOfCreation      2016-Feb-19
  */
@@ -18,7 +18,7 @@ namespace App\Helpers;
  * @package		CodeIgniter
  * @subpackage          Libraries
  * @category            Captcha
- * @author		Dreamztech Solutions Pvt. Ltd. Team
+ * @author		Laravel Team
  */
 class Captcha {
 
