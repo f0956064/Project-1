@@ -3,8 +3,9 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Providers\RouteServiceProvider;
-use App\User;
+use App\Helpers\Helper;
+use App\Models\User;
+use App\Models\UserWallet;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -29,7 +30,7 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = RouteServiceProvider::HOME;
+    protected $redirectTo = '/';
 
     /**
      * Create a new controller instance.
@@ -50,8 +51,10 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'name'      => ['required', 'string', 'max:255'],
-            'email'     => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'first_name' => ['required', 'string', 'max:255'],
+            'last_name'  => ['required', 'string', 'max:255'],
+            'phone'      => ['nullable', 'string', 'max:25'],
+            'email'      => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password'  => User::$passwordValidator,
         ]);
     }
@@ -64,12 +67,30 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
-            'name' => $data['name'],
+        $initials = Helper::generateNameInitials($data['first_name'], $data['last_name']);
+
+        $user = User::create([
+            'username' => Helper::randomString(15),
+            'first_name' => $data['first_name'],
+            'last_name' => $data['last_name'],
             'email' => $data['email'],
+            'phone' => $data['phone'] ?? null,
             'password' => Hash::make($data['password']),
+            // allow immediate login for front betting app
+            'status' => 1,
+            'verified' => 1,
+            'name_initials' => $initials['name_initials'] ?? null,
+            'name_initial_color_type' => $initials['name_initial_color_type'] ?? 1,
         ]);
+
+        // Ensure wallet row exists
+        UserWallet::firstOrCreate(
+            ['user_id' => $user->id],
+            ['amount' => 0]
+        );
+
+        return $user;
     }
 
-   
+
 }

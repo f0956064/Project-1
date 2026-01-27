@@ -167,4 +167,9 @@ class GameMode extends Model
             return Helper::resp($e->getMessage(), 500);
         }
     }
+
+    public function slot()
+    {
+        return $this->belongsTo(GameSlot::class, 'slot_id');
+    }
 }

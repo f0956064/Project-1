@@ -169,4 +169,14 @@ class GameSlot extends Model
             return Helper::resp($e->getMessage(), 500);
         }
     }
+
+    public function location()
+    {
+        return $this->belongsTo(GameLocation::class, 'game_id');
+    }
+
+    public function modes()
+    {
+        return $this->hasMany(GameMode::class, 'slot_id');
+    }
 }

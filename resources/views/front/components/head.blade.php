@@ -16,11 +16,24 @@
       <ul class="nav navbar-nav navbar-right">
         @if (Route::has('login'))
             @auth
-                <li><a href="{{ url('/') }}">Home</a></li>
+                <li><a href="{{ route('home') }}">Home</a></li>
+                <li><a href="{{ route('front.menu') }}">Menus</a></li>
+                <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                    Wallet <span class="caret"></span>
+                  </a>
+                  <ul class="dropdown-menu">
+                    <li><a href="{{ route('front.wallet.deposit') }}">Deposit Money</a></li>
+                    <li><a href="{{ route('front.wallet.withdraw') }}">Withdrawal Money</a></li>
+                    <li role="separator" class="divider"></li>
+                    <li><a href="{{ route('front.wallet.deposit.history') }}">Deposit History</a></li>
+                    <li><a href="{{ route('front.wallet.withdraw.history') }}">Withdrawal History</a></li>
+                  </ul>
+                </li>
                 <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Account <span class="caret"></span></a>
                 <ul class="dropdown-menu">
-                    <li><a href="#">My Profile</a></li>
+                    <li><a href="{{ route('front.menu') }}">Dashboard</a></li>
                     <li><a href="{{route('logout')}}">Logout</a></li>
                 </ul>
                 </li>

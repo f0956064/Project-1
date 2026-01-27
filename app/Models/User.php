@@ -192,6 +192,22 @@ class User extends Authenticatable {
 		return $this->belongsToMany('App\Models\Role', 'user_roles');
 	}
 
+	public function wallet() {
+		return $this->hasOne(\App\Models\UserWallet::class, 'user_id');
+	}
+
+	public function deposits() {
+		return $this->hasMany(\App\Models\UserDeposit::class, 'user_id');
+	}
+
+	public function withdrawals() {
+		return $this->hasMany(\App\Models\UserWithdrawal::class, 'user_id');
+	}
+
+	public function guesses() {
+		return $this->hasMany(\App\Models\UserGuess::class, 'user_id');
+	}
+
 	public function AauthAcessToken() {
 		return $this->hasMany('\App\Models\OauthAccessToken');
 	}

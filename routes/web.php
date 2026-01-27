@@ -102,11 +102,62 @@ Route::group(['prefix' => 'admin', 'middleware' => 'permission'], function () {
 		Route::post('locations/{game_location_id}/slots/{game_slot_id}/modes/{id}/toggle-status', 'App\Http\Controllers\Admin\GameController@modesToggleStatus')->name('game.modes.toggle-status');
 	});
 
+	Route::group(['prefix' => 'finance'], function () {
+		// Wallets
+		Route::get('wallets', 'App\Http\Controllers\Admin\WalletController@index')->name('finance.wallets.index');
+		Route::get('wallets/{id}/edit', 'App\Http\Controllers\Admin\WalletController@edit')->name('finance.wallets.edit');
+		Route::patch('wallets/{id}/update', 'App\Http\Controllers\Admin\WalletController@update')->name('finance.wallets.update');
+
+		// Deposits
+		Route::get('deposits', 'App\Http\Controllers\Admin\DepositController@index')->name('finance.deposits.index');
+		Route::post('deposits/{id}/approve', 'App\Http\Controllers\Admin\DepositController@approve')->name('finance.deposits.approve');
+		Route::post('deposits/{id}/reject', 'App\Http\Controllers\Admin\DepositController@reject')->name('finance.deposits.reject');
+
+		// Withdrawals
+		Route::get('withdrawals', 'App\Http\Controllers\Admin\WithdrawalController@index')->name('finance.withdrawals.index');
+		Route::post('withdrawals/{id}/approve', 'App\Http\Controllers\Admin\WithdrawalController@approve')->name('finance.withdrawals.approve');
+		Route::post('withdrawals/{id}/reject', 'App\Http\Controllers\Admin\WithdrawalController@reject')->name('finance.withdrawals.reject');
+
+		// Bets
+		Route::get('bets', 'App\Http\Controllers\Admin\BetController@index')->name('finance.bets.index');
+	});
+
 });
 
 Auth::routes(['verify' => true]);
-Route::get('/', 'App\Http\Controllers\HomeController@home')->name('home');
+
+// Customer auth aliases (betting users) - keeps existing /login and /register intact
+Route::get('customer/login', 'App\Http\Controllers\Auth\LoginController@showLoginForm')->name('customer.login');
+Route::post('customer/login', 'App\Http\Controllers\Auth\LoginController@login')->name('customer.login.submit');
+Route::post('customer/logout', 'App\Http\Controllers\Auth\LoginController@logout')->name('customer.logout');
+
+Route::get('customer/register', 'App\Http\Controllers\Auth\RegisterController@showRegistrationForm')->name('customer.register');
+Route::post('customer/register', 'App\Http\Controllers\Auth\RegisterController@register')->name('customer.register.submit');
+
 Route::group(['middleware' => 'auth'], function () {
+	Route::get('/', 'App\Http\Controllers\Front\GameController@locations')->name('home');
+
+	Route::group(['prefix' => 'game'], function () {
+		Route::get('locations/{game_location_id}/slots', 'App\Http\Controllers\Front\GameController@slots')->name('front.game.slots');
+		Route::get('locations/{game_location_id}/slots/{game_slot_id}/modes', 'App\Http\Controllers\Front\GameController@modes')->name('front.game.modes');
+	});
+
+	// Bets (implemented next)
+	Route::get('bets/{game_location_id}/{game_slot_id}/{game_mode_id}', 'App\Http\Controllers\Front\BetController@index')->name('front.bets.index');
+	Route::post('bets/{game_location_id}/{game_slot_id}/{game_mode_id}', 'App\Http\Controllers\Front\BetController@store')->name('front.bets.store');
+
+	// Menus
+	Route::get('menu', 'App\Http\Controllers\Front\MenuController@index')->name('front.menu');
+
+	// Wallet
+	Route::get('deposit', 'App\Http\Controllers\Front\WalletController@deposit')->name('front.wallet.deposit');
+	Route::post('deposit', 'App\Http\Controllers\Front\WalletController@depositStore')->name('front.wallet.deposit.store');
+	Route::get('deposit-history', 'App\Http\Controllers\Front\WalletController@depositHistory')->name('front.wallet.deposit.history');
+
+	Route::get('withdraw', 'App\Http\Controllers\Front\WalletController@withdraw')->name('front.wallet.withdraw');
+	Route::post('withdraw', 'App\Http\Controllers\Front\WalletController@withdrawStore')->name('front.wallet.withdraw.store');
+	Route::get('withdraw-history', 'App\Http\Controllers\Front\WalletController@withdrawHistory')->name('front.wallet.withdraw.history');
+
 	Route::get('logout', 'App\Http\Controllers\Auth\LoginController@logout')->name('logout');
 });
 

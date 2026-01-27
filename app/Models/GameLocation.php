@@ -157,4 +157,9 @@ class GameLocation extends Model
             return Helper::resp($e->getMessage(), 500);
         }
     }
+
+    public function slots()
+    {
+        return $this->hasMany(GameSlot::class, 'game_id');
+    }
 }
