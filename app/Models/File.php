@@ -52,6 +52,18 @@ class File extends Model {
 			'type' => 2,
 			'location' => 'a',
 		],
+		'game_location_logo' => [
+			'type' => 3,
+			'location' => 'g',
+		],
+		'game_slot_logo' => [
+			'type' => 4,
+			'location' => 'g',
+		],
+		'game_mode_logo' => [
+			'type' => 5,
+			'location' => 'g',
+		],
 	];
 
 	/**

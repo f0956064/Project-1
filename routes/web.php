@@ -73,6 +73,35 @@ Route::group(['prefix' => 'admin', 'middleware' => 'permission'], function () {
 		Route::get('icons', 'App\Http\Controllers\Admin\SiteSettingController@uiIcons')->name('ui.icons');
 	});
 
+	Route::group(['prefix' => 'game'], function () {
+		// Game Locations Routes
+		Route::get('locations', 'App\Http\Controllers\Admin\GameController@index')->name('game.locations.index');
+		Route::get('locations/create', 'App\Http\Controllers\Admin\GameController@create')->name('game.locations.create');
+		Route::post('locations/store', 'App\Http\Controllers\Admin\GameController@store')->name('game.locations.store');
+		Route::get('locations/{id}/edit', 'App\Http\Controllers\Admin\GameController@edit')->name('game.locations.edit');
+		Route::patch('locations/{id}/update', 'App\Http\Controllers\Admin\GameController@update')->name('game.locations.update');
+		Route::delete('locations/{id}/destroy', 'App\Http\Controllers\Admin\GameController@destroy')->name('game.locations.destroy');
+		Route::post('locations/{id}/toggle-status', 'App\Http\Controllers\Admin\GameController@toggleStatus')->name('game.locations.toggle-status');
+		
+		// Game Slots Routes
+		Route::get('locations/{game_location_id}/slots', 'App\Http\Controllers\Admin\GameController@slotsIndex')->name('game.slots.index');
+		Route::get('locations/{game_location_id}/slots/create', 'App\Http\Controllers\Admin\GameController@slotsCreate')->name('game.slots.create');
+		Route::post('locations/{game_location_id}/slots/store', 'App\Http\Controllers\Admin\GameController@slotsStore')->name('game.slots.store');
+		Route::get('locations/{game_location_id}/slots/{id}/edit', 'App\Http\Controllers\Admin\GameController@slotsEdit')->name('game.slots.edit');
+		Route::patch('locations/{game_location_id}/slots/{id}/update', 'App\Http\Controllers\Admin\GameController@slotsUpdate')->name('game.slots.update');
+		Route::delete('locations/{game_location_id}/slots/{id}/destroy', 'App\Http\Controllers\Admin\GameController@slotsDestroy')->name('game.slots.destroy');
+		Route::post('locations/{game_location_id}/slots/{id}/toggle-status', 'App\Http\Controllers\Admin\GameController@slotsToggleStatus')->name('game.slots.toggle-status');
+		
+		// Game Modes Routes
+		Route::get('locations/{game_location_id}/slots/{game_slot_id}/modes', 'App\Http\Controllers\Admin\GameController@modesIndex')->name('game.modes.index');
+		Route::get('locations/{game_location_id}/slots/{game_slot_id}/modes/create', 'App\Http\Controllers\Admin\GameController@modesCreate')->name('game.modes.create');
+		Route::post('locations/{game_location_id}/slots/{game_slot_id}/modes/store', 'App\Http\Controllers\Admin\GameController@modesStore')->name('game.modes.store');
+		Route::get('locations/{game_location_id}/slots/{game_slot_id}/modes/{id}/edit', 'App\Http\Controllers\Admin\GameController@modesEdit')->name('game.modes.edit');
+		Route::patch('locations/{game_location_id}/slots/{game_slot_id}/modes/{id}/update', 'App\Http\Controllers\Admin\GameController@modesUpdate')->name('game.modes.update');
+		Route::delete('locations/{game_location_id}/slots/{game_slot_id}/modes/{id}/destroy', 'App\Http\Controllers\Admin\GameController@modesDestroy')->name('game.modes.destroy');
+		Route::post('locations/{game_location_id}/slots/{game_slot_id}/modes/{id}/toggle-status', 'App\Http\Controllers\Admin\GameController@modesToggleStatus')->name('game.modes.toggle-status');
+	});
+
 });
 
 Auth::routes(['verify' => true]);
