@@ -112,5 +112,23 @@ class BetController extends Controller
 
         return [$location, $slot, $mode];
     }
+
+    public function myBet(Request $request)
+    {
+        $wallet = UserWallet::firstOrCreate(
+            ['user_id' => $request->user()->id],
+            ['amount' => 0]
+        );
+
+        $bets = UserGuess::where('user_id', $request->user()->id)
+            ->with(['location', 'slot', 'mode'])
+            ->orderBy('id', 'desc')
+            ->paginate(20);
+
+        return view('front.pages.my-bet.index', [
+            'wallet' => $wallet,
+            'bets' => $bets,
+        ]);
+    }
 }
 

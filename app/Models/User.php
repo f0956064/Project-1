@@ -26,6 +26,8 @@ class User extends Authenticatable {
 		'last_name',
 		'email',
 		'phone',
+		'referral_code',
+		'referred_by_id',
 		'password',
 		'remember_token',
 		'status', // 0 = inactive and email unverified, 1 = active, 2 = inactive and email verified, 3 = user rejected by admin
@@ -206,6 +208,14 @@ class User extends Authenticatable {
 
 	public function guesses() {
 		return $this->hasMany(\App\Models\UserGuess::class, 'user_id');
+	}
+
+	public function profile() {
+		return $this->hasOne(\App\Models\UserProfile::class, 'user_id');
+	}
+
+	public function referredBy() {
+		return $this->belongsTo(\App\Models\User::class, 'referred_by_id');
 	}
 
 	public function AauthAcessToken() {

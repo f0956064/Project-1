@@ -2,58 +2,44 @@
 
 @section('content')
   <div class="page-header">
-    <h3 style="margin-top: 10px;">Menus</h3>
+    <h3 style="margin-top: 0; color: var(--theme-primary);">Menu</h3>
   </div>
 
   @include('admin.components.messages')
 
-  <div class="alert alert-info">
-    <strong>Wallet Balance:</strong> {{ number_format((float) ($wallet->amount ?? 0), 2) }}
+  <div class="front-card" style="padding: 16px; margin-bottom: 20px;">
+    <strong>Wallet Balance:</strong> <span style="color: var(--theme-primary); font-size: 1.2em;">{{ number_format((float) ($wallet->amount ?? 0), 2) }}</span>
   </div>
 
   <div class="row">
-    <div class="col-xs-12 col-sm-6 col-md-4">
-      <div class="thumbnail">
-        <div class="caption">
-          <h4>Home</h4>
-          <p><a class="btn btn-primary btn-block" href="{{ route('home') }}">Game Locations</a></p>
-        </div>
+    <div class="col-xs-12 col-sm-6 col-md-4" style="margin-bottom: 16px;">
+      <div class="front-card" style="padding: 20px; text-align: center;">
+        <h4 style="margin-top: 0;">Home</h4>
+        <a class="btn btn-theme btn-block" href="{{ route('home') }}">Game Locations</a>
       </div>
     </div>
-
-    <div class="col-xs-12 col-sm-6 col-md-4">
-      <div class="thumbnail">
-        <div class="caption">
-          <h4>Deposit Money</h4>
-          <p><a class="btn btn-success btn-block" href="{{ route('front.wallet.deposit') }}">Deposit</a></p>
-        </div>
+    <div class="col-xs-12 col-sm-6 col-md-4" style="margin-bottom: 16px;">
+      <div class="front-card" style="padding: 20px; text-align: center;">
+        <h4 style="margin-top: 0;">Deposit</h4>
+        <a class="btn btn-theme btn-block" href="{{ route('front.wallet.deposit') }}">Deposit Money</a>
       </div>
     </div>
-
-    <div class="col-xs-12 col-sm-6 col-md-4">
-      <div class="thumbnail">
-        <div class="caption">
-          <h4>Withdrawal Money</h4>
-          <p><a class="btn btn-warning btn-block" href="{{ route('front.wallet.withdraw') }}">Withdraw</a></p>
-        </div>
+    <div class="col-xs-12 col-sm-6 col-md-4" style="margin-bottom: 16px;">
+      <div class="front-card" style="padding: 20px; text-align: center;">
+        <h4 style="margin-top: 0;">Withdraw</h4>
+        <a class="btn btn-theme btn-block" href="{{ route('front.wallet.withdraw') }}">Withdraw Money</a>
       </div>
     </div>
-
-    <div class="col-xs-12 col-sm-6 col-md-4">
-      <div class="thumbnail">
-        <div class="caption">
-          <h4>Deposit History</h4>
-          <p><a class="btn btn-default btn-block" href="{{ route('front.wallet.deposit.history') }}">View</a></p>
-        </div>
+    <div class="col-xs-12 col-sm-6 col-md-4" style="margin-bottom: 16px;">
+      <div class="front-card" style="padding: 20px; text-align: center;">
+        <h4 style="margin-top: 0;">Deposit History</h4>
+        <a class="btn btn-outline-theme btn-block" href="{{ route('front.wallet.deposit.history') }}">View</a>
       </div>
     </div>
-
-    <div class="col-xs-12 col-sm-6 col-md-4">
-      <div class="thumbnail">
-        <div class="caption">
-          <h4>Withdrawal History</h4>
-          <p><a class="btn btn-default btn-block" href="{{ route('front.wallet.withdraw.history') }}">View</a></p>
-        </div>
+    <div class="col-xs-12 col-sm-6 col-md-4" style="margin-bottom: 16px;">
+      <div class="front-card" style="padding: 20px; text-align: center;">
+        <h4 style="margin-top: 0;">Withdrawal History</h4>
+        <a class="btn btn-outline-theme btn-block" href="{{ route('front.wallet.withdraw.history') }}">View</a>
       </div>
     </div>
   </div>

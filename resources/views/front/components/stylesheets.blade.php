@@ -18,5 +18,6 @@
         var _token = '{{csrf_token()}}';
         var PATH = '{{url("/")}}';
     </script> 
-    @stack('page_css') 
+    <link rel="stylesheet" href="{{ asset('css/front-theme.css') }}">
+    @stack('page_css')
 </head>

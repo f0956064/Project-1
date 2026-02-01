@@ -46,9 +46,9 @@ class LoginController extends Controller
     {
         if (Auth::user()) {
             return redirect()->intended($this->redirectTo);
-        } else {
-            return view($this->view);
         }
+        $frontAuth = !request()->is('admin*');
+        return view($this->view, compact('frontAuth'));
     }
     
     public function redirectTo()
@@ -79,9 +79,8 @@ class LoginController extends Controller
         }
 
         // Customization: Validate if client status is active (1)
-        $email = $request->get($this->username());
-        // Customization: It's assumed that email field should be an unique field
-        $client = User::where($this->username(), $email)->first();
+        $loginField = $request->get($this->username());
+        $client = $this->findUserByLoginField($loginField);
 
         // If the login attempt was unsuccessful we will increment the number of attempts
         // to login and redirect the user back to the login form. Of course, when this
@@ -89,7 +88,7 @@ class LoginController extends Controller
         $this->incrementLoginAttempts($request);
 
         if (empty($client)) {
-            return $this->sendFailedLoginResponse($request, 'Please check your email or password.');
+            return $this->sendFailedLoginResponse($request, 'Please check your mobile/email or password.');
         }
 
         // Customization: If client status is inactive (0) return failed_status error.
@@ -101,26 +100,53 @@ class LoginController extends Controller
             return $this->sendFailedLoginResponse($request, 'Account is not verified yet.');
         }
 
-        // Customization: Validate if client status is active (1)
-        if ($this->attemptLogin($request)) {
+        if (\Hash::check($request->get('password'), $client->password)) {
+            \Auth::login($client, $request->boolean('remember'));
+            $request->session()->regenerate();
+            $this->clearLoginAttempts($request);
             return $this->sendLoginResponse($request);
         }
 
         return $this->sendFailedLoginResponse($request);
     }
 
-    /**
-     * Get the needed authorization credentials from the request.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return array
-     */
+    protected function findUserByLoginField($value)
+    {
+        if (empty($value)) {
+            return null;
+        }
+        if (strpos($value, '@') !== false) {
+            return User::where('email', $value)->first();
+        }
+        return User::where('phone', $value)->first();
+    }
+
+    public function username()
+    {
+        $segment = request()->segment(1);
+        if ($segment === 'admin') {
+            return 'email';
+        }
+        return 'mobile_or_email';
+    }
+
+    protected function validateLogin(Request $request)
+    {
+        $field = $this->username();
+        $rules = ['password' => 'required'];
+        $rules[$field] = $field === 'mobile_or_email' ? 'required|string' : 'required|string|email';
+        $request->validate($rules);
+    }
+
     protected function credentials(Request $request)
     {
-        $credentials = $request->only($this->username(), 'password');
-        // Customization: validate if client status is active (1)
-        $credentials['status'] = 1;
-        return $credentials;
+        $field = $this->username();
+        $value = $request->get($field);
+        if ($field === 'mobile_or_email') {
+            $key = strpos($value, '@') !== false ? 'email' : 'phone';
+            return ['password' => $request->get('password'), 'status' => 1, $key => $value];
+        }
+        return array_merge($request->only($field, 'password'), ['status' => 1]);
     }
 
     /**

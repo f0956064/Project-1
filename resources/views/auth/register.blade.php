@@ -2,15 +2,12 @@
 
 @section('content')
   <div class="row">
-    <div class="col-sm-12 col-md-8 col-md-offset-2 col-lg-6 col-lg-offset-3">
-      <div class="panel panel-default">
-        <div class="panel-heading">
-          <strong>Register</strong>
-        </div>
-        <div class="panel-body">
-          @include('admin.components.messages')
+    <div class="col-xs-12 col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2">
+      <div class="front-card" style="padding: 24px;">
+        <h3 style="margin-top: 0; color: var(--theme-primary);">Register</h3>
+        @include('admin.components.messages')
 
-          <form method="POST" action="{{ route('register') }}">
+          <form method="POST" action="{{ url()->current() }}">
             @csrf
 
             <div class="row">
@@ -77,13 +74,21 @@
             </div>
 
             <div class="form-group">
-              <button type="submit" class="btn btn-primary btn-block">Create account</button>
-              <div class="text-center" style="margin-top: 10px;">
-                <a href="{{ route('login') }}">Already registered? Login</a>
-              </div>
+              <label for="refercode">Referral code (optional)</label>
+              <input id="refercode" type="text" name="refercode" value="{{ old('refercode') }}"
+                     class="form-control{{ $errors->has('refercode') ? ' is-invalid' : '' }}" placeholder="Enter referral code if you have one">
+              @if ($errors->has('refercode'))
+                <span class="help-block"><strong>{{ $errors->first('refercode') }}</strong></span>
+              @endif
+            </div>
+
+            <div class="form-group">
+              <button type="submit" class="btn btn-theme btn-block btn-lg">Create account</button>
+              <p class="text-center" style="margin-top: 14px;">
+                <a href="{{ request()->is('customer*') ? route('customer.login') : route('login') }}">Already registered? Login</a>
+              </p>
             </div>
           </form>
-        </div>
       </div>
     </div>
   </div>

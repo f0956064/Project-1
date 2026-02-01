@@ -1,0 +1,221 @@
+/**
+ * Frontend betting app theme: yellow/purple, mobile-first, bottom nav
+ */
+:root {
+  --theme-primary: #6b2d5c;
+  --theme-primary-dark: #4a1f40;
+  --theme-accent: #ffc107;
+  --theme-accent-dark: #e6ac00;
+  --theme-bg: #f5f5f5;
+  --theme-card: #fff;
+  --theme-text: #333;
+  --theme-text-muted: #666;
+  --bottom-nav-height: 56px;
+  --top-bar-height: 50px;
+}
+
+body.front-app {
+  padding-bottom: var(--bottom-nav-height);
+  padding-top: var(--top-bar-height);
+  background: var(--theme-bg);
+  color: var(--theme-text);
+}
+
+/* Top bar */
+.front-topbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: var(--top-bar-height);
+  background: linear-gradient(135deg, var(--theme-primary) 0%, var(--theme-primary-dark) 100%);
+  color: #fff;
+  z-index: 1030;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+
+.front-topbar .brand {
+  font-weight: 700;
+  font-size: 1.25rem;
+  color: var(--theme-accent);
+  text-decoration: none;
+}
+
+.front-topbar .brand:hover {
+  color: #fff;
+}
+
+.front-topbar .btn-menu {
+  background: transparent;
+  border: none;
+  color: #fff;
+  padding: 8px 12px;
+  font-size: 1.5rem;
+  cursor: pointer;
+  line-height: 1;
+}
+
+/* Hamburger overlay menu */
+.front-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,0.4);
+  z-index: 1040;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.25s, visibility 0.25s;
+}
+
+.front-overlay.show {
+  opacity: 1;
+  visibility: visible;
+}
+
+.front-drawer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 280px;
+  max-width: 85vw;
+  height: 100%;
+  background: var(--theme-card);
+  z-index: 1050;
+  transform: translateX(-100%);
+  transition: transform 0.25s;
+  overflow-y: auto;
+  box-shadow: 4px 0 12px rgba(0,0,0,0.15);
+}
+
+.front-overlay.show .front-drawer {
+  transform: translateX(0);
+}
+
+.front-drawer .drawer-header {
+  background: linear-gradient(135deg, var(--theme-primary) 0%, var(--theme-primary-dark) 100%);
+  color: #fff;
+  padding: 20px 16px;
+}
+
+.front-drawer .drawer-header .brand {
+  color: var(--theme-accent);
+  font-weight: 700;
+  font-size: 1.25rem;
+}
+
+.front-drawer .drawer-body {
+  padding: 12px 0;
+}
+
+.front-drawer .nav-link {
+  display: flex;
+  align-items: center;
+  padding: 12px 20px;
+  color: var(--theme-text);
+  text-decoration: none;
+  border-bottom: 1px solid #eee;
+}
+
+.front-drawer .nav-link:hover {
+  background: #f8f8f8;
+  color: var(--theme-primary);
+}
+
+.front-drawer .nav-link.active {
+  background: rgba(107, 45, 92, 0.08);
+  color: var(--theme-primary);
+  font-weight: 600;
+}
+
+/* Bottom navigation */
+.front-bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: var(--bottom-nav-height);
+  background: #fff;
+  border-top: 1px solid #e0e0e0;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  z-index: 1020;
+  box-shadow: 0 -2px 10px rgba(0,0,0,0.06);
+}
+
+.front-bottom-nav a {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 4px;
+  color: var(--theme-text-muted);
+  text-decoration: none;
+  font-size: 0.7rem;
+  transition: color 0.2s;
+}
+
+.front-bottom-nav a:hover,
+.front-bottom-nav a.active {
+  color: var(--theme-primary);
+}
+
+.front-bottom-nav a .icon {
+  font-size: 1.25rem;
+  margin-bottom: 2px;
+}
+
+/* Cards and buttons */
+.front-card {
+  background: var(--theme-card);
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  margin-bottom: 16px;
+  overflow: hidden;
+}
+
+.btn-theme {
+  background: linear-gradient(135deg, var(--theme-accent) 0%, var(--theme-accent-dark) 100%);
+  color: var(--theme-primary-dark);
+  border: none;
+  font-weight: 600;
+}
+
+.btn-theme:hover {
+  background: var(--theme-accent-dark);
+  color: var(--theme-primary-dark);
+}
+
+.btn-outline-theme {
+  border: 2px solid var(--theme-primary);
+  color: var(--theme-primary);
+  background: transparent;
+}
+
+.btn-outline-theme:hover {
+  background: var(--theme-primary);
+  color: #fff;
+}
+
+/* Auth pages: no bottom nav */
+body.front-auth {
+  padding-bottom: 0;
+  padding-top: 0;
+}
+
+.front-auth .front-topbar,
+.front-auth .front-bottom-nav {
+  display: none;
+}
+
+.front-auth .container {
+  max-width: 420px;
+  margin-top: 2rem;
+}

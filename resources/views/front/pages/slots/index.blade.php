@@ -2,14 +2,9 @@
 
 @section('content')
   <div class="page-header">
-    <h3 style="margin-top: 10px;">
-      Slots - {{ $location->name }}
-    </h3>
+    <p><a href="{{ route('home') }}" class="btn btn-default btn-sm" style="margin-bottom: 8px;">&larr; Back to Locations</a></p>
+    <h3 style="margin-top: 0; color: var(--theme-primary);">Slots - {{ $location->name }}</h3>
   </div>
-
-  <p>
-    <a href="{{ route('home') }}" class="btn btn-default">Back to Locations</a>
-  </p>
 
   @if(isset($slots) && count($slots))
     <div class="row">
@@ -20,29 +15,28 @@
             $logo = \App\Models\File::file($logos[$slot->logo]);
           }
         @endphp
-        <div class="col-xs-12 col-sm-6 col-md-4">
-          <div class="thumbnail">
+        <div class="col-xs-12 col-sm-6 col-md-4" style="margin-bottom: 16px;">
+          <div class="front-card">
             @if($logo && isset($logo['original']))
-              <img src="{{ $logo['original'] }}" alt="{{ $slot->name }}" style="width:100%; max-height: 180px; object-fit: cover;">
+              <img src="{{ $logo['original'] }}" alt="{{ $slot->name }}" style="width:100%; max-height: 140px; object-fit: cover; border-radius: 8px 8px 0 0;">
+            @else
+              <div style="height: 100px; background: linear-gradient(135deg, var(--theme-primary) 0%, var(--theme-primary-dark) 100%); display: flex; align-items: center; justify-content: center;">
+                <span style="color: var(--theme-accent); font-size: 1.5rem; font-weight: 700;">{{ strtoupper(substr($slot->name, 0, 2)) }}</span>
+              </div>
             @endif
-            <div class="caption">
-              <h4 style="margin-top: 5px;">{{ $slot->name }}</h4>
-              <p class="text-muted" style="margin-bottom: 6px;">
-                Time: {{ $slot->start_time }} - {{ $slot->end_time }}
-              </p>
-              <p>
-                <a class="btn btn-primary btn-block"
-                   href="{{ route('front.game.modes', ['game_location_id' => $location->id, 'game_slot_id' => $slot->id]) }}">
-                  View Game Types
-                </a>
-              </p>
+            <div style="padding: 16px;">
+              <h4 style="margin: 0 0 6px; color: var(--theme-text);">{{ $slot->name }}</h4>
+              <p class="text-muted" style="margin: 0 0 12px; font-size: 0.9em;">{{ $slot->start_time ?? '' }} - {{ $slot->end_time ?? '' }}</p>
+              <a class="btn btn-theme btn-block" href="{{ route('front.game.modes', ['game_location_id' => $location->id, 'game_slot_id' => $slot->id]) }}">View Game Types</a>
             </div>
           </div>
         </div>
       @endforeach
     </div>
   @else
-    <div class="alert alert-info">No active slots found for this location.</div>
+    <div class="front-card" style="padding: 24px; text-align: center;">
+      <p style="margin: 0; color: var(--theme-text-muted);">No active slots found for this location.</p>
+    </div>
   @endif
 @endsection
 

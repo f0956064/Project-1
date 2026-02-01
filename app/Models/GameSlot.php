@@ -14,6 +14,8 @@ class GameSlot extends Model
         'logo',
         'start_time',
         'end_time',
+        'result_time',
+        'off_days',
         'is_active',
     ];
 
@@ -178,5 +180,10 @@ class GameSlot extends Model
     public function modes()
     {
         return $this->hasMany(GameMode::class, 'slot_id');
+    }
+
+    public function results()
+    {
+        return $this->hasMany(GameSlotResult::class, 'game_slot_id');
     }
 }

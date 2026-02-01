@@ -50,40 +50,56 @@ class RegisterController extends Controller
      */
     protected function validator(array $data)
     {
-        return Validator::make($data, [
-            'first_name' => ['required', 'string', 'max:255'],
-            'last_name'  => ['required', 'string', 'max:255'],
-            'phone'      => ['nullable', 'string', 'max:25'],
-            'email'      => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password'  => User::$passwordValidator,
-        ]);
+        $rules = [
+            'password' => User::$passwordValidator,
+        ];
+        if (isset($data['full_name']) && !empty(trim($data['full_name']))) {
+            $rules['full_name'] = ['required', 'string', 'max:255'];
+            $rules['phone'] = ['required', 'string', 'max:25'];
+            $rules['email'] = ['nullable', 'string', 'email', 'max:255', 'unique:users'];
+        } else {
+            $rules['first_name'] = ['required', 'string', 'max:255'];
+            $rules['last_name'] = ['required', 'string', 'max:255'];
+            $rules['phone'] = ['nullable', 'string', 'max:25'];
+            $rules['email'] = ['required', 'string', 'email', 'max:255', 'unique:users'];
+        }
+        $rules['refercode'] = ['nullable', 'string', 'max:50'];
+        return Validator::make($data, $rules);
     }
 
     /**
      * Create a new user instance after a valid registration.
      *
      * @param  array  $data
-     * @return \App\User
+     * @return \App\Models\User
      */
     protected function create(array $data)
     {
+        if (isset($data['full_name']) && !empty(trim($data['full_name']))) {
+            $parts = explode(' ', trim($data['full_name']), 2);
+            $data['first_name'] = $parts[0];
+            $data['last_name'] = $parts[1] ?? '';
+        }
         $initials = Helper::generateNameInitials($data['first_name'], $data['last_name']);
-
+        $referredBy = null;
+        if (!empty($data['refercode'] ?? '')) {
+            $referredBy = User::where('referral_code', $data['refercode'])->first();
+        }
         $user = User::create([
             'username' => Helper::randomString(15),
             'first_name' => $data['first_name'],
             'last_name' => $data['last_name'],
-            'email' => $data['email'],
+            'email' => $data['email'] ?? null,
             'phone' => $data['phone'] ?? null,
             'password' => Hash::make($data['password']),
-            // allow immediate login for front betting app
             'status' => 1,
             'verified' => 1,
             'name_initials' => $initials['name_initials'] ?? null,
             'name_initial_color_type' => $initials['name_initial_color_type'] ?? 1,
+            'referral_code' => strtoupper(Helper::randomString(6)),
+            'referred_by_id' => $referredBy ? $referredBy->id : null,
         ]);
 
-        // Ensure wallet row exists
         UserWallet::firstOrCreate(
             ['user_id' => $user->id],
             ['amount' => 0]
@@ -92,5 +108,26 @@ class RegisterController extends Controller
         return $user;
     }
 
+    public function showRegistrationForm()
+    {
+        return view('auth.register', ['frontAuth' => true]);
+    }
 
+    /**
+     * Verify user by token (e.g. from email link).
+     *
+     * @param  string  $token
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function verifyUser($token)
+    {
+        $user = User::where('remember_token', $token)->first();
+        if ($user) {
+            $user->verified = 1;
+            $user->remember_token = null;
+            $user->save();
+            return redirect()->route('login')->with('success', __('Your account is verified. You can login now.'));
+        }
+        return redirect()->route('login')->with('error', __('Invalid or expired verification link.'));
+    }
 }

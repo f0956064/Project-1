@@ -1,11 +1,11 @@
 <!doctype html>
 <html lang="en">
   @include('front.components.stylesheets')
-  <body>
+  <body class="{{ isset($frontAuth) && $frontAuth ? 'front-auth' : 'front-app' }}">
   @include('front.components.head')
-    <div class="container">
+    <main class="container" style="padding-top: 12px;">
       @yield('content')
-    </div>
+    </main>
     @include('front.components.scripts')
   </body>
 </html>

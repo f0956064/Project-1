@@ -158,6 +158,17 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::post('withdraw', 'App\Http\Controllers\Front\WalletController@withdrawStore')->name('front.wallet.withdraw.store');
 	Route::get('withdraw-history', 'App\Http\Controllers\Front\WalletController@withdrawHistory')->name('front.wallet.withdraw.history');
 
+	Route::get('profile', 'App\Http\Controllers\Front\ProfileController@edit')->name('front.profile.edit');
+	Route::patch('profile', 'App\Http\Controllers\Front\ProfileController@update')->name('front.profile.update');
+
+	Route::get('game-rules', 'App\Http\Controllers\Front\GameRulesController@index')->name('front.game.rules');
+	Route::get('game-timing', 'App\Http\Controllers\Front\GameTimingController@index')->name('front.game.timing');
+	Route::get('my-bet', 'App\Http\Controllers\Front\BetController@myBet')->name('front.my.bet');
+	Route::get('results', 'App\Http\Controllers\Front\ResultsController@index')->name('front.results');
+	Route::get('transaction-history', 'App\Http\Controllers\Front\TransactionHistoryController@index')->name('front.transaction.history');
+	Route::get('helpline', 'App\Http\Controllers\Front\HelplineController@index')->name('front.helpline');
+	Route::get('refer-and-earn', 'App\Http\Controllers\Front\ReferController@index')->name('front.refer');
+
 	Route::get('logout', 'App\Http\Controllers\Auth\LoginController@logout')->name('logout');
 });
 

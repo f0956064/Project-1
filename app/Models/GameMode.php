@@ -11,12 +11,25 @@ class GameMode extends Model
     protected $fillable = [
         'slot_id',
         'name',
+        'type',
+        'play_amount',
+        'win_amount',
+        'min_bet',
+        'max_bet',
+        'digit_length',
         'logo',
         'is_active',
     ];
 
     protected $hidden = [
         'updated_at',
+    ];
+
+    protected $casts = [
+        'play_amount' => 'decimal:2',
+        'win_amount' => 'decimal:2',
+        'min_bet' => 'decimal:2',
+        'max_bet' => 'decimal:2',
     ];
 
     public $orderBy = [];
