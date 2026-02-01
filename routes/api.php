@@ -32,6 +32,8 @@ Route::group(['prefix' => 'v1/', 'middleware' => ['auth:api', 'permission']], fu
 		Route::put('password', 'App\Http\Controllers\Api\UserController@updatePassword');
 	});
 	
+	// Deposit API
+	Route::post('deposit', 'App\Http\Controllers\Api\DepositController@deposit');
 
 });
 

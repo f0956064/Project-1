@@ -51,10 +51,10 @@ class DepositController extends Controller
 
                 $wallet = UserWallet::where('user_id', $deposit->user_id)->lockForUpdate()->first();
                 if (!$wallet) {
-                    $wallet = UserWallet::create(['user_id' => $deposit->user_id, 'amount' => 0]);
+                    $wallet = UserWallet::create(['user_id' => $deposit->user_id, 'wallet_balance' => 0]);
                 }
 
-                $wallet->amount = (float) $wallet->amount + (float) $deposit->amount;
+                $wallet->wallet_balance = (float) $wallet->wallet_balance + (float) $deposit->amount;
                 $wallet->save();
             });
 
