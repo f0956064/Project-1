@@ -122,6 +122,13 @@ Route::group(['prefix' => 'admin', 'middleware' => 'permission'], function () {
 		Route::get('bets', 'App\Http\Controllers\Admin\BetController@index')->name('finance.bets.index');
 	});
 
+	// User Deposits
+	Route::group(['prefix' => 'user-deposits'], function () {
+		Route::get('', 'App\Http\Controllers\Admin\UserDepositController@index')->name('user-deposits.index');
+		Route::post('{id}/approve', 'App\Http\Controllers\Admin\UserDepositController@approve')->name('user-deposits.approve');
+		Route::post('{id}/reject', 'App\Http\Controllers\Admin\UserDepositController@reject')->name('user-deposits.reject');
+	});
+
 });
 
 Auth::routes(['verify' => true]);

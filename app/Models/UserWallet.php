@@ -11,7 +11,8 @@ class UserWallet extends Model
 
     protected $fillable = [
         'user_id',
-        'amount',
+        'wallet_balance',
+        'max_withdrawal',
     ];
 
     protected $hidden = [

@@ -14,9 +14,10 @@ class CreateUserWalletsTable extends Migration
     public function up()
     {
         Schema::create('user_wallets', function (Blueprint $table) {
-            $table->bigIncrements('id')->unsigned();
-            $table->unsignedBigInteger('user_id')->nullable();
-            $table->decimal('amount', 10, 2)->default(0);
+            $table->bigIncrements('id');
+            $table->unsignedBigInteger('user_id');
+            $table->decimal('wallet_balance', 10, 2)->default(0.00);
+            $table->integer('max_withdrawal')->default(5);
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP'));
         });

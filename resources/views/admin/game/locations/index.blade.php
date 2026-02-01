@@ -60,19 +60,6 @@
             @if($permission['edit'])
             <a href="{{ route($routePrefix . '.edit',$val->id) }}" class="{!! \Config::get('view.table.list_light_button') !!}" data-toggle="tooltip" title="" data-original-title="Edit">{!! \Config::get('settings.icon_edit') !!}</a>
             @endif
-            @if($permission['destroy'])
-           <a class="{!! \Config::get('view.table.list_danger_button') !!}" data-toggle="tooltip" title="" data-confirm="Are You Sure?|This action can not be undone. Do you want to continue?" data-confirm-yes="event.preventDefault();
-              document.getElementById('delete-form-{{$val->id}}').submit();" data-original-title="Delete">{!! \Config::get('settings.icon_delete') !!}</a>
-            {!! Form::open([
-              'method' => 'DELETE',
-              'route' => [
-                $routePrefix . '.destroy',
-                $val->id
-                ],
-              'id' => 'delete-form-'.$val->id
-            ]) !!}
-            {!! Form::close() !!}
-            @endif
           </td>
           @endif
         </tr>

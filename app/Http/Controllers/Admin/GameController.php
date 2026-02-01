@@ -365,7 +365,8 @@ class GameController extends Controller
 
         $form = [
             'route'      => 'game.slots' . ($id ? '.update' : '.store'),
-            'back_route' => route('game.slots.index', $game_location_id),
+            'route_param' => ['game_location_id' => $game_location_id],
+            'back_route' => route('game.slots.index', ['game_location_id' => $game_location_id]),
             'include_scripts' => '<script src="' . asset('assets/libs/tui-time-picker/tui-time-picker.min.js') . '"></script>',
             'fields'     => [
                 'game_id'      => [
@@ -448,7 +449,7 @@ class GameController extends Controller
         $this->_routePrefix = 'game.modes';
         $this->_model = new GameMode();
         
-        $this->initIndex();
+        $this->initIndex(['game_location_id' => $game_location_id, 'game_slot_id' => $game_slot_id]);
         $srch_params = $request->all();
         $srch_params['slot_id'] = $game_slot_id;
         $this->_data['data'] = $this->_model->getListing($srch_params, $this->_offset);
@@ -597,6 +598,7 @@ class GameController extends Controller
 
         $form = [
             'route'      => 'game.modes' . ($id ? '.update' : '.store'),
+            'route_param' => ['game_location_id' => $game_location_id, 'game_slot_id' => $game_slot_id],
             'back_route' => route('game.modes.index', [$game_location_id, $game_slot_id]),
             'fields'     => [
                 'slot_id'      => [
