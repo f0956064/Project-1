@@ -30,7 +30,7 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo   = '/admin/home/';
+    protected $redirectTo   = '/admin/home';
     protected $view         = 'admin.login';
 
     public function __construct()
@@ -96,11 +96,21 @@ class LoginController extends Controller
             return $this->sendFailedLoginResponse($request, 'Your Account is blocked. Please conract administrator.');
         }
 
-        if (!$client->verified) {
-            return $this->sendFailedLoginResponse($request, 'Account is not verified yet.');
-        }
-
         if (\Hash::check($request->get('password'), $client->password)) {
+            // Frontend: unverified customer → resend OTP and redirect to OTP page
+            if (!$client->verified && (request()->is('login') || request()->is('customer/*'))) {
+                $this->clearLoginAttempts($request);
+                $otp = (string) random_int(100000, 999999);
+                $client->otp = $otp;
+                $client->otp_expires_at = \Carbon\Carbon::now()->addMinutes(15);
+                $client->save();
+                \App\Services\OtpService::send($client, $otp);
+                $request->session()->put('otp_verify_user_id', $client->id);
+                return redirect()->route('otp.verify.form')->with('success', 'OTP sent to your email/phone. Please verify to activate your account.');
+            }
+            if (!$client->verified) {
+                return $this->sendFailedLoginResponse($request, 'Account is not verified yet.');
+            }
             \Auth::login($client, $request->boolean('remember'));
             $request->session()->regenerate();
             $this->clearLoginAttempts($request);

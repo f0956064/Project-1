@@ -16,15 +16,11 @@ class ReferController extends Controller
             ['amount' => 0]
         );
 
-        $user = $request->user();
-        $referralCode = $user->referral_code ?? '';
-
         $content = SiteContent::where('slug', 'refer-and-earn')->first();
         $referText = $content ? $content->long_description : 'Refer your friends and earn cashback!';
 
         return view('front.pages.refer.index', [
             'wallet' => $wallet,
-            'referralCode' => $referralCode,
             'referText' => $referText,
         ]);
     }

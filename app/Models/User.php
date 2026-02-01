@@ -30,6 +30,8 @@ class User extends Authenticatable {
 		'referred_by_id',
 		'password',
 		'remember_token',
+		'otp',
+		'otp_expires_at',
 		'status', // 0 = inactive and email unverified, 1 = active, 2 = inactive and email verified, 3 = user rejected by admin
 		'verified',
 		'login_attempt',
@@ -76,6 +78,8 @@ class User extends Authenticatable {
 		'role_title',
 		'password',
 		'remember_token',
+		'otp',
+		'otp_expires_at',
 		'created_at',
 		'updated_at',
 		'deleted_at',
@@ -89,6 +93,7 @@ class User extends Authenticatable {
 	 */
 	protected $casts = [
 		'email_verified_at' => 'datetime',
+		'otp_expires_at' => 'datetime',
 	];
 
 	// for avatar

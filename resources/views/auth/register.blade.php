@@ -74,15 +74,6 @@
             </div>
 
             <div class="form-group">
-              <label for="refercode">Referral code (optional)</label>
-              <input id="refercode" type="text" name="refercode" value="{{ old('refercode') }}"
-                     class="form-control{{ $errors->has('refercode') ? ' is-invalid' : '' }}" placeholder="Enter referral code if you have one">
-              @if ($errors->has('refercode'))
-                <span class="help-block"><strong>{{ $errors->first('refercode') }}</strong></span>
-              @endif
-            </div>
-
-            <div class="form-group">
               <button type="submit" class="btn btn-theme btn-block btn-lg">Create account</button>
               <p class="text-center" style="margin-top: 14px;">
                 <a href="{{ request()->is('customer*') ? route('customer.login') : route('login') }}">Already registered? Login</a>

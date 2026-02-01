@@ -5,49 +5,117 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Helpers\Helper;
 use App\Models\User;
+use App\Models\UserRole;
 use App\Models\UserWallet;
+use App\Models\Role;
+use App\Services\OtpService;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Carbon\Carbon;
 
 class RegisterController extends Controller
 {
-    /*
-    |--------------------------------------------------------------------------
-    | Register Controller
-    |--------------------------------------------------------------------------
-    |
-    | This controller handles the registration of new users as well as their
-    | validation and creation. By default this controller uses a trait to
-    | provide this functionality without requiring any additional code.
-    |
-    */
-
     use RegistersUsers;
 
-    /**
-     * Where to redirect users after registration.
-     *
-     * @var string
-     */
     protected $redirectTo = '/';
 
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
     public function __construct()
     {
-       // $this->middleware('guest');
+        // $this->middleware('guest');
     }
 
     /**
-     * Get a validator for an incoming registration request.
-     *
-     * @param  array  $data
-     * @return \Illuminate\Contracts\Validation\Validator
+     * Handle registration: customer (frontend) uses OTP flow; admin uses standard flow.
      */
+    public function register(Request $request)
+    {
+        if ($request->is('admin*')) {
+            $this->validator($request->all())->validate();
+            $user = $this->create($request->all());
+            $this->guard()->login($user);
+            return $this->registered($request, $user) ?: redirect($this->redirectPath());
+        }
+
+        return $this->registerCustomerWithOtp($request);
+    }
+
+    /**
+     * Customer registration: create with verified=0, send OTP, redirect to OTP page.
+     */
+    protected function registerCustomerWithOtp(Request $request)
+    {
+        $data = $request->all();
+
+        $rules = [
+            'first_name' => ['required', 'string', 'max:255'],
+            'last_name' => ['required', 'string', 'max:255'],
+            'phone' => ['required_without:email', 'nullable', 'string', 'max:25'],
+            'email' => ['required_without:phone', 'nullable', 'string', 'email', 'max:255'],
+            'password' => array_merge(User::$passwordValidator, ['confirmed']),
+        ];
+        $validator = Validator::make($data, $rules);
+        if ($validator->fails()) {
+            return redirect()->back()->withInput($request->except('password', 'password_confirmation'))->withErrors($validator);
+        }
+
+        $email = $data['email'] ?? null;
+        $phone = $data['phone'] ?? null;
+
+        $existingByEmail = $email ? User::where('email', $email)->first() : null;
+        $existingByPhone = $phone ? User::where('phone', $phone)->first() : null;
+        $existing = $existingByEmail ?? $existingByPhone;
+
+        if ($existing) {
+            if ($existing->verified) {
+                if ($email && $existing->email === $email) {
+                    $validator->errors()->add('email', 'The email has already been taken.');
+                } else {
+                    $validator->errors()->add('phone', 'The phone has already been taken.');
+                }
+                return redirect()->back()->withInput($request->except('password', 'password_confirmation'))->withErrors($validator);
+            }
+            return redirect()->route('login')
+                ->with('error', 'User already exists. Please login to receive OTP again.');
+        }
+
+        $initials = Helper::generateNameInitials($data['first_name'], $data['last_name']);
+        $otp = (string) random_int(100000, 999999);
+        $otpExpires = Carbon::now()->addMinutes(15);
+
+        $user = User::create([
+            'username' => Helper::randomString(15),
+            'first_name' => $data['first_name'],
+            'last_name' => $data['last_name'],
+            'email' => $email,
+            'phone' => $phone,
+            'password' => Hash::make($data['password']),
+            'status' => 1,
+            'verified' => 0,
+            'name_initials' => $initials['name_initials'] ?? null,
+            'name_initial_color_type' => $initials['name_initial_color_type'] ?? 1,
+            'otp' => $otp,
+            'otp_expires_at' => $otpExpires,
+        ]);
+
+        $customerRole = Role::where('title', 'customer')->first();
+        if ($customerRole) {
+            UserRole::create(['user_id' => $user->id, 'role_id' => $customerRole->id]);
+        }
+
+        UserWallet::firstOrCreate(
+            ['user_id' => $user->id],
+            ['amount' => 0]
+        );
+
+        OtpService::send($user, $otp);
+
+        $request->session()->put('otp_verify_user_id', $user->id);
+
+        return redirect()->route('otp.verify.form')->with('success', 'OTP sent to your email/phone. Please verify.');
+    }
+
     protected function validator(array $data)
     {
         $rules = [
@@ -63,16 +131,9 @@ class RegisterController extends Controller
             $rules['phone'] = ['nullable', 'string', 'max:25'];
             $rules['email'] = ['required', 'string', 'email', 'max:255', 'unique:users'];
         }
-        $rules['refercode'] = ['nullable', 'string', 'max:50'];
         return Validator::make($data, $rules);
     }
 
-    /**
-     * Create a new user instance after a valid registration.
-     *
-     * @param  array  $data
-     * @return \App\Models\User
-     */
     protected function create(array $data)
     {
         if (isset($data['full_name']) && !empty(trim($data['full_name']))) {
@@ -81,10 +142,6 @@ class RegisterController extends Controller
             $data['last_name'] = $parts[1] ?? '';
         }
         $initials = Helper::generateNameInitials($data['first_name'], $data['last_name']);
-        $referredBy = null;
-        if (!empty($data['refercode'] ?? '')) {
-            $referredBy = User::where('referral_code', $data['refercode'])->first();
-        }
         $user = User::create([
             'username' => Helper::randomString(15),
             'first_name' => $data['first_name'],
@@ -96,8 +153,6 @@ class RegisterController extends Controller
             'verified' => 1,
             'name_initials' => $initials['name_initials'] ?? null,
             'name_initial_color_type' => $initials['name_initial_color_type'] ?? 1,
-            'referral_code' => strtoupper(Helper::randomString(6)),
-            'referred_by_id' => $referredBy ? $referredBy->id : null,
         ]);
 
         UserWallet::firstOrCreate(
@@ -115,9 +170,6 @@ class RegisterController extends Controller
 
     /**
      * Verify user by token (e.g. from email link).
-     *
-     * @param  string  $token
-     * @return \Illuminate\Http\RedirectResponse
      */
     public function verifyUser($token)
     {

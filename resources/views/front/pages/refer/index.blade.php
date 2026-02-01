@@ -10,32 +10,10 @@
   </div>
 
   <div class="front-card" style="padding: 24px;">
-    @if($referralCode)
-      <div class="form-group">
-        <label>Your Referral Code</label>
-        <div class="input-group">
-          <input type="text" class="form-control" id="referral-code" value="{{ $referralCode }}" readonly>
-          <span class="input-group-btn">
-            <button type="button" class="btn btn-theme" onclick="copyReferral()">Copy</button>
-          </span>
-        </div>
-      </div>
-    @endif
-    @if($referText)
-      <div style="margin-top: 16px;">{!! nl2br(e($referText)) !!}</div>
+    @if($referText ?? null)
+      <div>{!! nl2br(e($referText)) !!}</div>
     @else
-      <p>Share your referral code with friends. When they register and play, you earn rewards!</p>
+      <p class="text-muted">Refer & Earn content will be available here.</p>
     @endif
   </div>
-
-  @if($referralCode)
-  <script>
-  function copyReferral() {
-    var el = document.getElementById('referral-code');
-    el.select();
-    document.execCommand('copy');
-    alert('Referral code copied!');
-  }
-  </script>
-  @endif
 @endsection

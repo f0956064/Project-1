@@ -126,6 +126,11 @@ Route::group(['prefix' => 'admin', 'middleware' => 'permission'], function () {
 
 Auth::routes(['verify' => true]);
 
+// OTP verification (customer)
+Route::get('verify-otp', 'App\Http\Controllers\Auth\OtpVerificationController@showForm')->name('otp.verify.form');
+Route::post('verify-otp', 'App\Http\Controllers\Auth\OtpVerificationController@verify')->name('otp.verify');
+Route::post('resend-otp', 'App\Http\Controllers\Auth\OtpVerificationController@resend')->name('otp.resend');
+
 // Customer auth aliases (betting users) - keeps existing /login and /register intact
 Route::get('customer/login', 'App\Http\Controllers\Auth\LoginController@showLoginForm')->name('customer.login');
 Route::post('customer/login', 'App\Http\Controllers\Auth\LoginController@login')->name('customer.login.submit');
