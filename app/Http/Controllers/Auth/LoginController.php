@@ -53,11 +53,14 @@ class LoginController extends Controller
     
     public function redirectTo()
     {
-        if(request()->get('r')){
+        if (request()->get('r')) {
             return request()->get('r');
         }
-
-        return $this->redirectTo;
+        // Base redirect on where the user logged in from (request URL), not constructor
+        if (request()->is('admin*')) {
+            return '/admin/home';
+        }
+        return '/';
     }
 
     /**
@@ -118,6 +121,19 @@ class LoginController extends Controller
         }
 
         return $this->sendFailedLoginResponse($request);
+    }
+
+    /**
+     * Send the response after the user was authenticated.
+     * Admin login always redirects to /admin/home; frontend to / (no intended URL override).
+     */
+    protected function sendLoginResponse(Request $request)
+    {
+        $path = $this->redirectTo();
+        if ($request->expectsJson()) {
+            return response()->json(['redirect' => $path]);
+        }
+        return redirect()->to($path);
     }
 
     protected function findUserByLoginField($value)
