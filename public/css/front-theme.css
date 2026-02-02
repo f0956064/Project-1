@@ -1,15 +1,15 @@
-:/**
- * Frontend betting app theme: dark neon gaming style, mobile-first
+/**
+ * Frontend betting app theme: professional gaming style, mobile-first
  */
 :root {
-  --theme-primary: #0f172a; /* deep navy */
-  --theme-primary-dark: #020617;
-  --theme-accent: #22c55e; /* neon green */
-  --theme-accent-dark: #16a34a;
-  --theme-bg: #020617; /* app content background */
-  --theme-card: #111827;
-  --theme-text: #e5e7eb;
-  --theme-text-muted: #9ca3af;
+  --theme-primary: #2563eb; /* professional royal blue */
+  --theme-primary-dark: #1e40af;
+  --theme-accent: #f97316; /* vibrant orange */
+  --theme-accent-dark: #ea580c;
+  --theme-bg: #f8fafc; /* light gray background */
+  --theme-card: #ffffff;
+  --theme-text: #1e293b;
+  --theme-text-muted: #64748b;
   --bottom-nav-height: 56px;
   --top-bar-height: 50px;
 }
@@ -17,7 +17,7 @@
 body.front-app {
   padding-bottom: var(--bottom-nav-height);
   padding-top: var(--top-bar-height);
-  background: radial-gradient(circle at top, #1e293b 0, #020617 55%);
+  background: var(--theme-bg);
   color: var(--theme-text);
 }
 
@@ -123,12 +123,12 @@ body.front-app {
 }
 
 .front-drawer .nav-link:hover {
-  background: #f8f8f8;
+  background: #f1f5f9;
   color: var(--theme-primary);
 }
 
 .front-drawer .nav-link.active {
-  background: rgba(107, 45, 92, 0.08);
+  background: rgba(37, 99, 235, 0.08);
   color: var(--theme-primary);
   font-weight: 600;
 }
@@ -146,7 +146,7 @@ body.front-app {
   justify-content: space-around;
   align-items: center;
   z-index: 1020;
-  box-shadow: 0 -2px 10px rgba(0,0,0,0.06);
+  box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
 }
 
 .front-bottom-nav a {
@@ -156,7 +156,7 @@ body.front-app {
   align-items: center;
   justify-content: center;
   padding: 6px 4px;
-  color: #f3e7ff;
+  color: rgba(255, 255, 255, 0.85);
   text-decoration: none;
   font-size: 0.7rem;
   transition: color 0.2s;
@@ -176,7 +176,7 @@ body.front-app {
 .front-card {
   background: var(--theme-card);
   border-radius: 12px;
-  box-shadow: 0 8px 18px rgba(0,0,0,0.12);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
   margin-bottom: 16px;
   overflow: hidden;
 }
@@ -191,16 +191,21 @@ body.front-app {
 }
 
 .btn-theme:hover {
-  background: linear-gradient(135deg, var(--theme-primary-dark) 0%, #2a064e 100%);
+  background: linear-gradient(135deg, var(--theme-primary-dark) 0%, #1e3a8a 100%);
   color: #ffffff;
-  box-shadow: 0 6px 14px rgba(0,0,0,0.2);
+  box-shadow: 0 6px 14px rgba(37, 99, 235, 0.3);
   transform: translateY(-1px);
+}
+
+.btn-theme:active {
+  transform: translateY(0);
 }
 
 .btn-outline-theme {
   border: 2px solid var(--theme-primary);
   color: var(--theme-primary);
   background: transparent;
+  border-radius: 999px;
 }
 
 .btn-outline-theme:hover {
@@ -212,8 +217,9 @@ body.front-app {
 body.front-auth {
   padding-bottom: 0;
   padding-top: 0;
-  background: var(--theme-primary);
+  background: linear-gradient(135deg, var(--theme-primary) 0%, var(--theme-primary-dark) 100%);
   color: #ffffff;
+  min-height: 100vh;
 }
 
 .front-auth .front-topbar,
@@ -224,43 +230,86 @@ body.front-auth {
 .front-auth .container {
   max-width: 460px;
   margin-top: 3rem;
+  margin-bottom: 3rem;
 }
 
 .front-auth .front-card {
-  background: transparent;
-  border-radius: 0;
-  box-shadow: none;
-  color: #ffffff;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 16px;
+  box-shadow: 0 12px 32px rgba(0,0,0,0.2);
+  color: var(--theme-text);
+  padding: 32px 24px;
 }
 
 .front-auth h3 {
-  font-size: 1.4rem;
+  font-size: 1.5rem;
   font-weight: 700;
   text-align: center;
-  margin-bottom: 1.25rem;
+  margin-bottom: 1.5rem;
+  color: var(--theme-primary);
 }
 
 .front-auth .form-group label {
-  color: #f3e7ff;
+  color: var(--theme-text);
   font-weight: 500;
+  margin-bottom: 6px;
 }
 
 .front-auth .form-control {
   border-radius: 999px;
-  border: none;
-  background: #f3edf9;
+  border: 2px solid #e2e8f0;
+  background: #ffffff;
   box-shadow: none;
-  height: 46px;
-  padding-left: 18px;
-  padding-right: 18px;
+  height: 48px;
+  padding-left: 20px;
+  padding-right: 20px;
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
 
 .front-auth .form-control:focus {
   outline: none;
-  box-shadow: 0 0 0 2px rgba(255, 202, 28, 0.6);
+  border-color: var(--theme-primary);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
 }
 
 .front-auth .help-block,
 .front-auth .text-danger {
-  color: #ffd2d2;
+  color: #ef4444;
+  font-size: 0.875rem;
+}
+
+.front-auth a {
+  color: var(--theme-primary);
+  text-decoration: none;
+}
+
+.front-auth a:hover {
+  color: var(--theme-primary-dark);
+  text-decoration: underline;
+}
+
+/* Table enhancements */
+.front-card table thead tr {
+  background: var(--theme-primary);
+  color: #ffffff;
+}
+
+.front-card table tbody tr:nth-child(even) {
+  background: #f8fafc;
+}
+
+.front-card table tbody tr:hover {
+  background: #f1f5f9;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .front-card {
+    border-radius: 8px;
+    margin-bottom: 12px;
+  }
+  
+  .front-auth .front-card {
+    padding: 24px 20px;
+  }
 }
