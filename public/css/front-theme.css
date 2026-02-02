@@ -1,15 +1,15 @@
-/**
- * Frontend betting app theme: yellow/purple, mobile-first, bottom nav
+:/**
+ * Frontend betting app theme: dark neon gaming style, mobile-first
  */
 :root {
-  --theme-primary: #5b1ca8; /* deep gaming purple */
-  --theme-primary-dark: #3b1074;
-  --theme-accent: #ffca1c; /* warm yellow */
-  --theme-accent-dark: #f0b000;
-  --theme-bg: #ffd925; /* app content background yellow */
-  --theme-card: #ffffff;
-  --theme-text: #222222;
-  --theme-text-muted: #6b6b6b;
+  --theme-primary: #0f172a; /* deep navy */
+  --theme-primary-dark: #020617;
+  --theme-accent: #22c55e; /* neon green */
+  --theme-accent-dark: #16a34a;
+  --theme-bg: #020617; /* app content background */
+  --theme-card: #111827;
+  --theme-text: #e5e7eb;
+  --theme-text-muted: #9ca3af;
   --bottom-nav-height: 56px;
   --top-bar-height: 50px;
 }
@@ -17,7 +17,7 @@
 body.front-app {
   padding-bottom: var(--bottom-nav-height);
   padding-top: var(--top-bar-height);
-  background: var(--theme-bg);
+  background: radial-gradient(circle at top, #1e293b 0, #020617 55%);
   color: var(--theme-text);
 }
 
