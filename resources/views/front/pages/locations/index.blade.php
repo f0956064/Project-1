@@ -2,9 +2,13 @@
 
 @section('content')
   <div class="page-header">
-    <h3 style="margin-top: 0; color: var(--theme-primary);">Game Locations</h3>
+    <h3 style="margin-top: 0; color: var(--theme-primary);">Games</h3>
   </div>
-
+  @if (isset($gameSettings) && $gameSettings->show_games == 0)
+    <div class="front-card" style="padding: 24px; text-align: center;">
+      <p style="margin: 0; color: var(--theme-text-muted);">Games are currently disabled.</p>
+    </div>
+  @else
   @if(isset($locations) && count($locations))
     <div class="row">
       @foreach($locations as $location)
@@ -35,6 +39,7 @@
     <div class="front-card" style="padding: 24px; text-align: center;">
       <p style="margin: 0; color: var(--theme-text-muted);">No active game locations found.</p>
     </div>
+  @endif
   @endif
 @endsection
 

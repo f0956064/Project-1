@@ -51,12 +51,12 @@ class UserDepositController extends Controller
                 if (!$wallet) {
                     $wallet = UserWallet::create([
                         'user_id' => $deposit->user_id, 
-                        'wallet_balance' => 0,
+                        'amount' => 0,
                         'max_withdrawal' => 5 // Default value
                     ]);
                 }
 
-                $wallet->wallet_balance = (float) $wallet->wallet_balance + (float) $deposit->amount;
+                $wallet->amount = (float) $wallet->amount + (float) $deposit->amount;
                 $wallet->save();
             });
 

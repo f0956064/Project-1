@@ -129,6 +129,18 @@ Route::group(['prefix' => 'admin', 'middleware' => 'permission'], function () {
 		Route::post('{id}/reject', 'App\Http\Controllers\Admin\UserDepositController@reject')->name('user-deposits.reject');
 	});
 
+	// User Guesses
+	Route::get('user-guesses', 'App\Http\Controllers\Admin\UserGuessController@index')->name('user-guesses.index');
+
+	// Game Slot Results
+	Route::resource('game-slot-results', 'App\Http\Controllers\Admin\GameSlotResultController');
+	Route::get('get-slots-by-location', 'App\Http\Controllers\Admin\GameSlotResultController@getSlots')->name('get-slots-by-location');
+	Route::get('get-modes-by-slot', 'App\Http\Controllers\Admin\GameSlotResultController@getModes')->name('get-modes-by-slot');
+
+	// Game Settings
+	Route::get('game-settings', 'App\Http\Controllers\Admin\GameSettingController@index')->name('game-settings.index');
+	Route::post('game-settings/update', 'App\Http\Controllers\Admin\GameSettingController@update')->name('game-settings.update');
+
 });
 
 Auth::routes(['verify' => true]);

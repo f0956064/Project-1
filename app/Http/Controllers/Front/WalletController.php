@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Front;
 
 use App\Http\Controllers\Controller;
+use App\Models\GameSetting;
 use App\Models\UserDeposit;
 use App\Models\UserWallet;
 use App\Models\UserWithdrawal;
@@ -17,9 +18,11 @@ class WalletController extends Controller
             ['user_id' => $request->user()->id],
             ['amount' => 0]
         );
+        $gameSettings = GameSetting::first();
 
         return view('front.pages.wallet.deposit', [
             'wallet' => $wallet,
+            'gameSettings' => $gameSettings,
         ]);
     }
 
@@ -67,9 +70,10 @@ class WalletController extends Controller
             ['user_id' => $request->user()->id],
             ['amount' => 0]
         );
-
+        $gameSettings = GameSetting::first();
         return view('front.pages.wallet.withdraw', [
             'wallet' => $wallet,
+            'gameSettings' => $gameSettings,
         ]);
     }
 
@@ -87,12 +91,18 @@ class WalletController extends Controller
                     ->first();
 
                 if (!$wallet) {
-                    $wallet = UserWallet::create(['user_id' => $request->user()->id, 'amount' => 0]);
+                    $wallet = UserWallet::create(['user_id' => $request->user()->id, 'amount' => 0, 'max_withdrawal' => 5]);
                 }
 
                 $amount = (float) $request->input('amount');
                 if ((float) $wallet->amount < $amount) {
                     throw new \RuntimeException('Insufficient wallet balance.');
+                }
+
+                $userDepositCount = UserWithdrawal::where('user_id', $request->user()->id)->count();
+                $userWalletData = UserWallet::where('user_id', $request->user()->id)->first();
+                if ($userDepositCount >= $userWalletData->max_withdrawal) {
+                    throw new \RuntimeException('You have reached the maximum withdrawal limit.');
                 }
 
                 // Hold funds immediately; admin approval will just mark status.

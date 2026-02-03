@@ -40,7 +40,8 @@ class UserRequest extends FormRequest
             'phone'             => 'required|max:12|unique:users,phone,' . $this->_id . ',id,deleted_at,NULL',
             'phone' => 'required|max:12',
             'avatar'            => 'mimes:'. $fileValidations['mime'] . '|max:' . $fileValidations['max'],
-            'confirm-password'  => 'nullable|required_with:password|same:password'
+            'confirm-password'  => 'nullable|required_with:password|same:password',
+            'max_withdrawal'    => 'nullable|integer|min:0',
         ];
 
         if(is_string($this->avatar)) {

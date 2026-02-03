@@ -472,6 +472,22 @@ class User extends Authenticatable {
 				}
 			}
 
+			if (array_key_exists('max_withdrawal', $input)) {
+				// dd($input);
+				$userWallet = UserWallet::where('user_id', $data->id)->first();
+				// dd($userWallet);
+				if ($userWallet) {
+					$userWallet->max_withdrawal = $input['max_withdrawal'];
+					$userWallet->save();
+				} else {
+					UserWallet::create([
+						'user_id' => $data->id,
+						'amount' => 0,
+						'max_withdrawal' => $input['max_withdrawal'],
+					]);
+				}
+			}
+
 			return \App\Helpers\Helper::resp('Changes has been successfully saved.', $responseStatus, $data);
 
 		} catch (Exception $e) {

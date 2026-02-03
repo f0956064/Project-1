@@ -13,6 +13,11 @@
 
   <div class="row">
     <div class="col-xs-12 col-md-6">
+      @if (isset($gameSettings) && $gameSettings->deposit == 0)
+        <div class="front-card" style="padding: 24px; text-align: center;">
+          <p style="margin: 0; color: var(--theme-text-muted);">Deposits are currently disabled.</p>
+        </div>
+      @else
       <div class="front-card" style="padding: 20px;">
         <h4 style="margin-top: 0; color: var(--theme-primary);">Deposit Request</h4>
         <form method="POST" action="{{ route('front.wallet.deposit.store') }}">
@@ -46,6 +51,7 @@
           <button type="submit" class="btn btn-theme btn-block btn-lg">Submit Deposit</button>
         </form>
       </div>
+      @endif
       <p style="margin-top: 12px;">
         <a class="btn btn-default btn-sm" href="{{ route('front.menu') }}">Back to Menu</a>
         <a class="btn btn-default btn-sm" href="{{ route('front.wallet.deposit.history') }}">Deposit History</a>

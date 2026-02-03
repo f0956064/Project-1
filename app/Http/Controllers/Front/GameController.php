@@ -7,6 +7,7 @@ use App\Models\File;
 use App\Models\GameLocation;
 use App\Models\GameMode;
 use App\Models\GameSlot;
+use App\Models\GameSetting;
 use Illuminate\Http\Request;
 
 class GameController extends Controller
@@ -23,9 +24,12 @@ class GameController extends Controller
             ->get()
             ->keyBy('id');
 
+        $gameSettings = GameSetting::first();
+
         return view('front.pages.locations.index', [
             'locations' => $locations,
             'logos' => $logos,
+            'gameSettings' => $gameSettings
         ]);
     }
 

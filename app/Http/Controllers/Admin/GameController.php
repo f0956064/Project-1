@@ -612,6 +612,27 @@ class GameController extends Controller
                         'required'  => true
                     ]
                 ],
+                'win_amount'      => [
+                    'type'          => 'number',
+                    'label'         => 'Win Price(This will multiply with bet amount)',
+                    'attributes'    => [
+                        'required'  => true
+                    ]
+                ],
+                'min_bet'      => [
+                    'type'          => 'number',
+                    'label'         => 'Min Bet',
+                    'attributes'    => [
+                        'required'  => true
+                    ]
+                ],
+                'max_bet'      => [
+                    'type'          => 'number',
+                    'label'         => 'Max Bet',
+                    'attributes'    => [
+                        'required'  => true
+                    ]
+                ],
                 'logo'        => [
                     'type'          => 'file',
                     'label'         => 'Logo',

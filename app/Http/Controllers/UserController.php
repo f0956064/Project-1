@@ -181,6 +181,7 @@ class UserController extends Controller {
 				$this->_data['data'] = $this->_model->getListing([
 					'id' => $id,
 					'id_greater_than' => \Auth::user()->id,
+					'with' => ['wallet']
 				]);
 
 				$return = \App\Helpers\Helper::notValidData($this->_data['data'], $this->_routePrefix . '.index');
@@ -237,6 +238,14 @@ class UserController extends Controller {
 						'label' => 'Email',
 						'help' => 'Maximum 255 characters',
 						'attributes' => ['required' => true],
+					],
+					'max_withdrawal' => [
+						'type' => 'number',
+						'label' => 'Max Withdrawal',
+						'value' => isset($this->_data['data']->wallet->max_withdrawal) ? $this->_data['data']->wallet->max_withdrawal : 5,
+						'attributes' => [
+							'min' => 0,
+						],
 					],
 					'phone' => [
 						'type' => 'text',
