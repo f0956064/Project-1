@@ -18,7 +18,7 @@
             $logo = \App\Models\File::file($logos[$location->logo]);
           }
         @endphp
-        <div class="col-xs-12 col-sm-6 col-md-4" style="margin-bottom: 16px;">
+        <div class="col-xs-6 col-sm-6 col-md-3" style="margin-bottom: 16px;">
           <div class="front-card">
             @if($logo && isset($logo['original']))
               <img src="{{ $logo['original'] }}" alt="{{ $location->name }}" style="width:100%; max-height: 160px; object-fit: cover; border-radius: 8px 8px 0 0;">
