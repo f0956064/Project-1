@@ -26,8 +26,23 @@
             @endif
             <div style="padding: 16px;">
               <h4 style="margin: 0 0 6px; color: var(--theme-text);">{{ $slot->name }}</h4>
-              <p class="text-muted" style="margin: 0 0 12px; font-size: 0.9em;">{{ $slot->start_time ?? '' }} - {{ $slot->end_time ?? '' }}</p>
-              <a class="btn btn-theme btn-block" href="{{ route('front.game.modes', ['game_location_id' => $location->id, 'game_slot_id' => $slot->id]) }}">View Game Types</a>
+              <p class="text-muted" style="margin: 0 0 12px; font-size: 0.9em;">
+                 {{ \Carbon\Carbon::parse($slot->start_time)->format('h:i A') }} - {{ \Carbon\Carbon::parse($slot->end_time)->format('h:i A') }}
+              </p>
+              
+              @php
+                  $now = \Carbon\Carbon::now();
+                  $start = \Carbon\Carbon::parse($slot->start_time);
+                  $end = \Carbon\Carbon::parse($slot->end_time);
+                  
+                  $isActive = true;
+              @endphp
+
+              @if($isActive)
+                <a class="btn btn-theme btn-block" href="{{ route('front.game.modes', ['game_location_id' => $location->id, 'game_slot_id' => $slot->id]) }}">View Game Types</a>
+              @else
+                <button class="btn btn-default btn-block" disabled style="opacity: 0.6; color: #999; border: 1px solid #ddd;">Closed</button>
+              @endif
             </div>
           </div>
         </div>

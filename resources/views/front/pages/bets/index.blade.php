@@ -12,12 +12,11 @@
     <div class="col-xs-12 col-md-5" style="margin-bottom: 20px;">
       <div class="front-card" style="padding: 20px;">
         <p style="margin-bottom: 16px;"><strong>Wallet Balance:</strong> <span style="color: var(--theme-primary); font-size: 1.1em;">{{ number_format((float) ($wallet->amount ?? 0), 2) }}</span></p>
-
         <form method="POST" action="{{ route('front.bets.store', [$location->id, $slot->id, $mode->id]) }}">
           @csrf
           <div class="form-group">
             <label for="guess">Guess</label>
-            <input type="text" id="guess" name="guess" value="{{ old('guess') }}" class="form-control{{ $errors->has('guess') ? ' is-invalid' : '' }}" required placeholder="Enter your guess">
+            <input type="number" id="guess" name="guess" value="{{ old('guess') }}" class="form-control{{ $errors->has('guess') ? ' is-invalid' : '' }}" required placeholder="Enter your guess">
             @if ($errors->has('guess'))
               <span class="help-block text-danger"><strong>{{ $errors->first('guess') }}</strong></span>
             @endif

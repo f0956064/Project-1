@@ -27,6 +27,7 @@ class BetController extends Controller
             'game_location_id' => $location->id,
             'game_slot_id' => $slot->id,
             'game_mode_id' => $mode->id,
+            'date' => date('Y-m-d'),
         ]);
 
         return view('front.pages.bets.index', [
