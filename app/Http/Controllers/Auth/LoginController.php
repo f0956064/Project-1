@@ -36,23 +36,20 @@ class LoginController extends Controller
     public function __construct()
     {
         $segment = request()->segment(1);
-        if($segment != 'admin') {
+        if($segment != 'admin' && !request()->is('customer*')) {
             $this->redirectTo = '/';
+            $this->view = 'front.download';
+        }
+
+        if($segment === 'customer') {
+             $this->redirectTo = 'customer/home';
             $this->view = 'auth.login';
         }
     }
 
     public function showLoginForm()
     {
-        // Always redirect main domain login to download view
-        if (!request()->is('admin*') && !request()->is('customer*')) {
-            return redirect('/'); // '/' route now shows download view
-        }
         if (Auth::user()) {
-            // If user is logged in and tries to access main domain, redirect to download view
-            if (!request()->is('admin*') && !request()->is('customer*')) {
-                return redirect('/');
-            }
             return redirect()->intended($this->redirectTo);
         }
         $frontAuth = !request()->is('admin*');
@@ -216,7 +213,7 @@ class LoginController extends Controller
     {
         auth()->logout();
         // redirect to homepage
-        return redirect('/');
+        return redirect('customer/login');
 
     }
 }
