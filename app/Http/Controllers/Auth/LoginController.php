@@ -44,7 +44,15 @@ class LoginController extends Controller
 
     public function showLoginForm()
     {
+        // Always redirect main domain login to download view
+        if (!request()->is('admin*') && !request()->is('customer*')) {
+            return redirect('/'); // '/' route now shows download view
+        }
         if (Auth::user()) {
+            // If user is logged in and tries to access main domain, redirect to download view
+            if (!request()->is('admin*') && !request()->is('customer*')) {
+                return redirect('/');
+            }
             return redirect()->intended($this->redirectTo);
         }
         $frontAuth = !request()->is('admin*');

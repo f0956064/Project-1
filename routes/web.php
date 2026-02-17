@@ -158,6 +158,10 @@ Route::post('customer/logout', 'App\Http\Controllers\Auth\LoginController@logout
 Route::get('customer/register', 'App\Http\Controllers\Auth\RegisterController@showRegistrationForm')->name('customer.register');
 Route::post('customer/register', 'App\Http\Controllers\Auth\RegisterController@register')->name('customer.register.submit');
 
+Route::get('/', function() {
+    return view('front.download');
+})->name('download');
+
 Route::group(['middleware' => 'auth'], function () {
 	Route::get('/', 'App\Http\Controllers\Front\GameController@locations')->name('home');
 
