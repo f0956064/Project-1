@@ -19,7 +19,9 @@
         <th>Game Mode</th>
         <th>Date</th>
         <th>Guess</th>
+        <th>Amount</th>
         <th>DateTime</th>
+        <th>Action</th>
       </tr>
     </thead>
     <tbody>
@@ -34,7 +36,11 @@
             <td>{{ $val->mode ? $val->mode->name : $val->game_mode_id }}</td>
             <td>{{ $val->date }}</td>
             <td>{{ $val->guess }}</td>
+            <td>{{ $val->amount }}</td>
             <td>{{ $val->created_at }}</td>
+            <td>
+              <a href="{{ route('admin.user_guesses.delete', $val->id) }}" class="btn btn-danger btn-sm">Delete</a>
+            </td>
           </tr>
         @endforeach
       @else

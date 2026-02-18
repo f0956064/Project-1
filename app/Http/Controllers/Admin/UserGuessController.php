@@ -7,7 +7,9 @@ use App\Models\GameLocation;
 use App\Models\GameMode;
 use App\Models\GameSlot;
 use App\Models\UserGuess;
+use App\Models\UserWallet;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class UserGuessController extends Controller
 {
@@ -73,5 +75,41 @@ class UserGuessController extends Controller
 
         return view('admin.user_guesses.index', $this->_data)
             ->with('i', ($request->input('page', 1) - 1) * $this->_offset);
+    }
+    public function delete($id)
+    {
+        try {
+            DB::beginTransaction();
+
+            $guess = $this->_model->getListing(['id' => $id]);
+
+            if (!$guess) {
+                 return redirect()->route($this->_routePrefix . '.index')->with('error', 'Record not found.');
+            }
+
+            // Refund logic
+            $userWallet = UserWallet::where('user_id', $guess->user_id)->first();
+            if ($userWallet) {
+                $userWallet->amount += $guess->amount;
+                $userWallet->save();
+            } else {
+                 // Create wallet if it doesn't exist
+                 UserWallet::create([
+                     'user_id' => $guess->user_id,
+                     'amount' => $guess->amount,
+                     'max_withdrawal' => 0
+                 ]);
+            }
+
+            $guess->delete();
+
+            DB::commit();
+
+            return redirect()->route($this->_routePrefix . '.index')->with('success', 'User guess deleted and amount refunded successfully.');
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->route($this->_routePrefix . '.index')->with('error', $e->getMessage());
+        }
     }
 }

@@ -131,6 +131,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'permission'], function () {
 
 	// User Guesses
 	Route::get('user-guesses', 'App\Http\Controllers\Admin\UserGuessController@index')->name('user-guesses.index');
+	Route::get('user-guesses/{id}/delete', 'App\Http\Controllers\Admin\UserGuessController@delete')->name('admin.user_guesses.delete');
 
 	// Game Slot Results
 	Route::resource('game-slot-results', 'App\Http\Controllers\Admin\GameSlotResultController');
