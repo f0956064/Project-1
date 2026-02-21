@@ -54,23 +54,23 @@
             @endif
           </div>
 
-          <div class="form-group">
+          <!-- <div class="form-group">
             <label class="front-checkbox">
               <input type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }}>
               {{ __('Remember Me') }}
             </label>
-          </div>
+          </div> -->
 
           <button type="submit" class="btn btn-theme btn-block btn-lg">
             {{ __('Login') }}
           </button>
 
           @if (Route::has('password.request'))
-            <p class="text-center">
+            <!-- <p class="text-center">
               <a href="{{ route('password.request') }}">
                 {{ __('Forgot Your Password?') }}
               </a>
-            </p>
+            </p> -->
           @endif
         </form>
       </div>

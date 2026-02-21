@@ -126,9 +126,26 @@ class BetController extends Controller
             ->orderBy('id', 'desc')
             ->paginate(20);
 
+        $winnings = \App\Models\GameWinner::where('user_id', $request->user()->id)
+            ->with([
+                'user',
+            ])
+            ->join('game_locations', 'game_winners.game_id', '=', 'game_locations.id')
+            ->join('game_slots', 'game_winners.slot_id', '=', 'game_slots.id')
+            ->join('game_modes', 'game_winners.game_mode_id', '=', 'game_modes.id')
+            ->select(
+                'game_winners.*',
+                'game_locations.name as location_name',
+                'game_slots.name as slot_name',
+                'game_modes.name as mode_name'
+            )
+            ->orderBy('game_winners.id', 'desc')
+            ->paginate(20, ['*'], 'winning_page');
+
         return view('front.pages.my-bet.index', [
-            'wallet' => $wallet,
-            'bets' => $bets,
+            'wallet'   => $wallet,
+            'bets'     => $bets,
+            'winnings' => $winnings,
         ]);
     }
 }

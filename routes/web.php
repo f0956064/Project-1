@@ -133,6 +133,12 @@ Route::group(['prefix' => 'admin', 'middleware' => 'permission'], function () {
 	Route::get('user-guesses', 'App\Http\Controllers\Admin\UserGuessController@index')->name('user-guesses.index');
 	Route::get('user-guesses/{id}/delete', 'App\Http\Controllers\Admin\UserGuessController@delete')->name('admin.user_guesses.delete');
 
+	// Game Winners
+	Route::get('game-winners', 'App\Http\Controllers\Admin\GameWinnerController@index')->name('game-winners.index');
+
+	// Financial Reports
+	Route::get('reports', 'App\Http\Controllers\Admin\ReportController@index')->name('reports.index');
+
 	// Game Slot Results
 	Route::resource('game-slot-results', 'App\Http\Controllers\Admin\GameSlotResultController');
 	Route::get('get-slots-by-location', 'App\Http\Controllers\Admin\GameSlotResultController@getSlots')->name('get-slots-by-location');
@@ -203,6 +209,9 @@ Route::group(['middleware' => 'auth'], function () {
 
 	Route::get('logout', 'App\Http\Controllers\Auth\LoginController@logout')->name('logout');
 });
+
+// Game Winner Processor (public – no auth required)
+Route::get('process-winners', 'App\Http\Controllers\GameWinnerProcessorController@process')->name('process.winners');
 
 Route::fallback(function () {
 	return view('404');

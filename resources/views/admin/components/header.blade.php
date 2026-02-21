@@ -12,14 +12,14 @@
                     </span>
                 </a>
 
-                <a href="{{ route('admin.home') }}" class="logo logo-light">
+                <!-- <a href="{{ route('admin.home') }}" class="logo logo-light">
                     <span class="logo-sm">
                         <img src="{{ asset('img/logo-light.png') }}" height="22" alt="ADMIN - {{ \Config::get('settings.company_name') }}"/>
                     </span>
                     <span class="logo-lg">
                         <img src="{{ asset('img/logo-light.png') }}" height="22" alt="ADMIN - {{ \Config::get('settings.company_name') }}"/>
                     </span>
-                </a>
+                </a> -->
             </div>
 
             @if(\Config::get('settings.page_layout') == 'vertical')

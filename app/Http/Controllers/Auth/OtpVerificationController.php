@@ -38,13 +38,13 @@ class OtpVerificationController extends Controller
 
         $userId = $request->session()->get('otp_verify_user_id');
         if (!$userId) {
-            return redirect()->route('login')->with('error', 'Session expired. Please login to receive OTP again.');
+            return redirect()->route('customer.login')->with('error', 'Session expired. Please login to receive OTP again.');
         }
 
         $user = User::find($userId);
         if (!$user || $user->verified) {
             $request->session()->forget('otp_verify_user_id');
-            return redirect()->route('login')->with($user && $user->verified ? 'success' : 'error', $user && $user->verified ? 'Already verified. You can login.' : 'Session invalid.');
+            return redirect()->route('customer.login')->with($user && $user->verified ? 'success' : 'error', $user && $user->verified ? 'Already verified. You can login.' : 'Session invalid.');
         }
 
         if ($user->otp !== $request->input('otp')) {
@@ -62,7 +62,7 @@ class OtpVerificationController extends Controller
 
         $request->session()->forget('otp_verify_user_id');
 
-        return redirect()->route('login')->with('success', 'Account verified successfully. You can login now.');
+        return redirect()->route('customer.login')->with('success', 'Account verified successfully. You can login now.');
     }
 
     /**

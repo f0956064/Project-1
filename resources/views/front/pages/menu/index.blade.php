@@ -33,13 +33,13 @@
     <div class="col-xs-12 col-sm-6 col-md-4" style="margin-bottom: 16px;">
       <div class="front-card" style="padding: 20px; text-align: center;">
         <h4 style="margin-top: 0;">Deposit History</h4>
-        <a class="btn btn-outline-theme btn-block" href="{{ route('front.wallet.deposit.history') }}">View</a>
+        <a class="btn btn-theme btn-block" href="{{ route('front.wallet.deposit.history') }}">View</a>
       </div>
     </div>
     <div class="col-xs-12 col-sm-6 col-md-4" style="margin-bottom: 16px;">
       <div class="front-card" style="padding: 20px; text-align: center;">
         <h4 style="margin-top: 0;">Withdrawal History</h4>
-        <a class="btn btn-outline-theme btn-block" href="{{ route('front.wallet.withdraw.history') }}">View</a>
+        <a class="btn btn-theme btn-block" href="{{ route('front.wallet.withdraw.history') }}">View</a>
       </div>
     </div>
   </div>

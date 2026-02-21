@@ -22,7 +22,7 @@
     </div>
     <div class="drawer-body">
       <a href="{{ route('home') }}" class="nav-link {{ request()->routeIs('home') ? 'active' : '' }}">Home</a>
-      <a href="{{ route('front.menu') }}" class="nav-link {{ request()->routeIs('front.menu') ? 'active' : '' }}">Menu</a>
+      <!-- <a href="{{ route('front.menu') }}" class="nav-link {{ request()->routeIs('front.menu') ? 'active' : '' }}">Menu</a> -->
       <a href="{{ route('front.wallet.deposit') }}" class="nav-link {{ request()->routeIs('front.wallet.deposit*') ? 'active' : '' }}">Deposit</a>
       <a href="{{ route('front.wallet.withdraw') }}" class="nav-link {{ request()->routeIs('front.wallet.withdraw*') ? 'active' : '' }}">Withdraw</a>
       <a href="{{ route('front.wallet.deposit.history') }}" class="nav-link {{ request()->routeIs('front.wallet.deposit.history') ? 'active' : '' }}">Deposit History</a>
@@ -32,9 +32,8 @@
       <a href="{{ route('front.game.timing') }}" class="nav-link {{ request()->routeIs('front.game.timing') ? 'active' : '' }}">Game Timing</a>
       <a href="{{ route('front.my.bet') }}" class="nav-link {{ request()->routeIs('front.my.bet') ? 'active' : '' }}">My Bet</a>
       <a href="{{ route('front.results') }}" class="nav-link {{ request()->routeIs('front.results') ? 'active' : '' }}">Results</a>
-      <a href="{{ route('front.transaction.history') }}" class="nav-link {{ request()->routeIs('front.transaction.history') ? 'active' : '' }}">Transaction History</a>
+      <!-- <a href="{{ route('front.transaction.history') }}" class="nav-link {{ request()->routeIs('front.transaction.history') ? 'active' : '' }}">Transaction History</a> -->
       <a href="{{ route('front.helpline') }}" class="nav-link {{ request()->routeIs('front.helpline') ? 'active' : '' }}">Helpline</a>
-      <a href="{{ route('front.refer') }}" class="nav-link {{ request()->routeIs('front.refer') ? 'active' : '' }}">Refer & Earn</a>
       <a href="{{ route('logout') }}" class="nav-link">Logout</a>
     </div>
   </div>
@@ -43,19 +42,19 @@
 {{-- Bottom nav --}}
 <nav class="front-bottom-nav">
   <a href="{{ route('home') }}" class="{{ request()->routeIs('home') ? 'active' : '' }}">
-    <span class="icon glyphicon glyphicon-home"></span>
+    <span class="icon glyphicon glyphicon-home" style="font-size: 22px;"></span>
     Home
   </a>
   <a href="{{ route('front.wallet.deposit') }}" class="{{ request()->routeIs('front.wallet*') ? 'active' : '' }}">
-    <span class="icon glyphicon glyphicon-credit-card"></span>
+    <span class="icon glyphicon glyphicon-credit-card" style="font-size: 22px;"></span>
     Wallet
   </a>
   <a href="{{ route('front.my.bet') }}" class="{{ request()->routeIs('front.my.bet') ? 'active' : '' }}">
-    <span class="icon glyphicon glyphicon-list"></span>
+    <span class="icon glyphicon glyphicon-list" style="font-size: 22px;"></span>
     My Bet
   </a>
   <a href="{{ route('front.menu') }}" class="{{ request()->routeIs('front.menu') ? 'active' : '' }}">
-    <span class="icon glyphicon glyphicon-th-list"></span>
+    <span class="icon glyphicon glyphicon-th-list" style="font-size: 22px;"></span>
     Menu
   </a>
 </nav>

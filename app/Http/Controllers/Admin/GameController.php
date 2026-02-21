@@ -616,7 +616,9 @@ class GameController extends Controller
                     'type'          => 'number',
                     'label'         => 'Win Price(This will multiply with bet amount)',
                     'attributes'    => [
-                        'required'  => true
+                        'required'  => true,
+                        'min'       => 1,
+                        'step'      => 'any'
                     ]
                 ],
                 'min_bet'      => [

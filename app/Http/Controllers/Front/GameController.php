@@ -24,12 +24,18 @@ class GameController extends Controller
             ->get()
             ->keyBy('id');
 
-        $gameSettings = GameSetting::first();
+        $gameSettings = \App\Models\GameSetting::with(['banners' => function ($q) {
+            $q->with('cdn');
+        }])->first();
+
+        $gameNotice = \App\Models\GameNotice::first();
 
         return view('front.pages.locations.index', [
-            'locations' => $locations,
-            'logos' => $logos,
-            'gameSettings' => $gameSettings
+            'locations'    => $locations,
+            'logos'        => $logos,
+            'gameSettings' => $gameSettings,
+            'gameNotice'   => $gameNotice,
+            'banners'      => $gameSettings ? $gameSettings->banners : collect(),
         ]);
     }
 
