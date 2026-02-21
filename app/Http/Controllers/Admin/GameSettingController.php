@@ -33,6 +33,7 @@ class GameSettingController extends Controller
         }
         
         $this->_data['data'] = $data;
+        $this->_data['game_notice'] = \App\Models\GameNotice::first();
 
         return view('admin.game_settings.index', $this->_data);
     }
@@ -63,6 +64,63 @@ class GameSettingController extends Controller
         } catch (\Exception $e) {
             \App\Models\ErrorLog::Log($e);
             return response()->json(['status' => 'error', 'message' => $e->getMessage()], 500);
+        }
+    }
+
+    public function updateNotice(Request $request)
+    {
+        $request->validate([
+            'description' => 'required|string'
+        ]);
+
+        $notice = \App\Models\GameNotice::first();
+        if ($notice) {
+            $notice->update(['description' => $request->description]);
+        } else {
+            \App\Models\GameNotice::create(['description' => $request->description]);
+        }
+
+        return redirect()->back()->with('success', 'Game notice updated successfully.');
+    }
+
+    public function updateBanner(Request $request)
+    {
+        $request->validate([
+            'banner_image.*' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
+        ]);
+
+        $gameSetting = GameSetting::first();
+        if (!$gameSetting) {
+            $gameSetting = GameSetting::create([
+                'id' => 1,
+                'show_games' => 1,
+                'deposit' => 1,
+                'withdrawal' => 1
+            ]);
+        }
+
+        if ($request->hasFile('banner_image')) {
+            $files = \App\Models\File::upload($request, 'banner_image', 'home_banner', $gameSetting->id);
+            if ($files) {
+                return redirect()->back()->with('success', 'Home banner(s) uploaded successfully.');
+            }
+        }
+
+        return redirect()->back()->with('error', 'Failed to upload home banner.');
+    }
+
+    public function deleteBanner(Request $request, $id)
+    {
+        try {
+            $file = \App\Models\File::findOrFail($id);
+            if ($file->entity_type == \App\Models\File::$fileType['home_banner']['type']) {
+                \App\Models\File::deleteFile($file, true);
+                return redirect()->back()->with('success', 'Banner deleted successfully.');
+            }
+            return redirect()->back()->with('error', 'Invalid file type.');
+        } catch (\Exception $e) {
+            \App\Models\ErrorLog::Log($e);
+            return redirect()->back()->with('error', 'Failed to delete banner.');
         }
     }
 }

@@ -141,6 +141,9 @@ Route::group(['prefix' => 'admin', 'middleware' => 'permission'], function () {
 	// Game Settings
 	Route::get('game-settings', 'App\Http\Controllers\Admin\GameSettingController@index')->name('game-settings.index');
 	Route::post('game-settings/update', 'App\Http\Controllers\Admin\GameSettingController@update')->name('game-settings.update');
+	Route::post('game-settings/update-notice', 'App\Http\Controllers\Admin\GameSettingController@updateNotice')->name('game-settings.update-notice');
+	Route::post('game-settings/update-banner', 'App\Http\Controllers\Admin\GameSettingController@updateBanner')->name('game-settings.update-banner');
+	Route::delete('game-settings/delete-banner/{id}', 'App\Http\Controllers\Admin\GameSettingController@deleteBanner')->name('game-settings.delete-banner');
 
 });
 

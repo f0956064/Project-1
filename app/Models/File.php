@@ -64,6 +64,10 @@ class File extends Model {
 			'type' => 5,
 			'location' => 'g',
 		],
+		'home_banner' => [
+			'type' => 6,
+			'location' => 'h',
+		],
 	];
 
 	/**
