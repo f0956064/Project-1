@@ -270,7 +270,7 @@
             <h1 class="hero-title">Play Popular Fatafat Games And Win Unlimited Cash</h1>
             <p class="hero-subtitle">Experience the thrill anytime, anywhere!</p>
             <!-- Direct Download URL Transformation -->
-            <a href="https://drive.google.com/uc?export=download&id=1tQ9r2ZdbLEDXg6FLCV0EVCl5TddU6Mfj" class="btn-download">
+            <a href="https://fatafatplay.com/storage/assets/FatafatPlay.apk" download="FatafatPlay.apk" class="btn-download">
                 <i class="fa fa-download mr-2"></i> Download App Now
             </a>
         </div>
