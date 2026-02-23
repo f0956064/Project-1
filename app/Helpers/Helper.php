@@ -14,7 +14,7 @@ class Helper {
 	 * @param string $dateFormat custom date format [any custom date format, which is not default]
 	 * @param string $timezone [User timezone]
 	 * @version:    1.0.0.5
-	 * @author:     Somnath Mukherjee
+	 * @author:     Info 
 	 */
 	public static function showdate($date, $showTime = true, $dateFormat = '', $timezone = '') {
 		if (self::check_valid_date($date)) {
@@ -46,7 +46,7 @@ class Helper {
 	 * @param:      tag name [string]
 	 * @return:     tag value if found else boolean
 	 * @version:    1.0.0.1
-	 * @author:     Somnath Mukherjee
+	 * @author:     Info 
 	 */
 
 	public static function text_within_tag($string, $tagname) {
@@ -58,7 +58,7 @@ class Helper {
 	/**
 	 * Check valid time
 	 * @param:      time as string
-	 * @author:     Somnath Mukherjee
+	 * @author:     Info 
 	 * @version:    1.0.0.1
 	 */
 	public static function checktime($time = '00:00:00') {
@@ -83,7 +83,7 @@ class Helper {
 	/**
 	 * Check valid date
 	 * @param:      date as string
-	 * @author:     Somnath Mukherjee
+	 * @author:     Info 
 	 * @version:    1.0.0.2
 	 */
 	public static function check_valid_date($date = '') {
@@ -100,7 +100,7 @@ class Helper {
 	 * Get clean url.
 	 * @params:         url string
 	 * @version:        1.0.0.1
-	 * @author:         Somnath Mukherjee
+	 * @author:         Info 
 	 */
 
 	public static function getcleanurl($name) {
@@ -140,7 +140,7 @@ class Helper {
 	/**
 	 * Check for directory name
 	 * @param:      directory name (mandatory).
-	 * @author:     Somnath Mukherjee.
+	 * @author:     Info .
 	 * @version:    1.0.0.1
 	 *
 	 * NOTE:        It checks only into user panels assets folder
@@ -215,7 +215,7 @@ class Helper {
 	 * @param:      If you want to create a simple array then pass TRUE. It will not
 	 *              create any associative array.
 	 *
-	 * @author:     Somnath Mukherjee.
+	 * @author:     Info .
 	 *
 	 * @version:    1.0.0.2
 	 */

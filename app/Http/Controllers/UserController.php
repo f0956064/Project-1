@@ -28,8 +28,16 @@ class UserController extends Controller {
 			$this->initIndex();
 
 			$user = \Auth::user();
-			$srch_params = $request->all();
-			$srch_params['role_gte'] = $this->_model->myRoleMinLevel($user->id);
+			
+
+			if ($user->id == 1){
+				$srch_params = $request->all();
+				$srch_params['role_gte'] = $this->_model->myRoleMinLevel($user->id);
+			} else {
+				$srch_params = $request->all();
+				$srch_params['role_gte'] = $this->_model->myRoleMinLevel($user->id);
+				$srch_params['role_slug'] = 'customer';
+			}
 			$this->_data['data'] = $this->_model->getListing($srch_params, $this->_offset);
 			$this->_data['filters'] = $this->_model->getFilters();
 			$this->_data['orderBy'] = $this->_model->orderBy;
@@ -197,12 +205,10 @@ class UserController extends Controller {
 				$ownAccount = false;
 				$roleModel = new \App\Models\Role;
 				$userMinRole = $this->_model->myRoleMinLevel(\Auth::user()->id);
-				$roles = $roleModel->getListing([
-					'level_gte' => $userMinRole,
-					'orderBy' => 'roles__level',
-				])
-					->pluck('title', 'id')
-					->all();
+				$roles = [
+					4 => 'Customer'
+				];
+				// dd($roles);
 			}
 			$status = \App\Helpers\Helper::makeSimpleArray($this->_model->statuses, 'id,name');
 			$this->_data['form'] = [
@@ -278,12 +284,10 @@ class UserController extends Controller {
 					//                 'value'         => isset($data->appointment) ? $data->appointment : []
 					// ],
 					'role_id' => [
-						'type' => 'checkbox',
+						'type' => 'hidden',
 						'label' => 'Role',
-						'options' => $roles,
-						'attributes' => ['width' => 'col-lg-4 col-md-4 col-sm-12 col-xs-12'],
-						'value' => $userRoles,
-						// if you want to single role for an User
+						'value' => 4,
+						// if you want to sin`gle role for an User
 						// change to radio instead of checkbox.
 						// Comment upper value tag. And
 						// uncomment value tag from below.

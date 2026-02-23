@@ -414,9 +414,6 @@ class User extends Authenticatable {
 
 				$responseStatus = 201;
 			} else {
-				if (isset($input['email'])) {
-					unset($input['email']);
-				}
 				$data = $this->getListing([
 					'id' => $id,
 					'id_greater_than' => $user_id,
