@@ -34,7 +34,7 @@
                   $now = \Carbon\Carbon::now();
                   $start = \Carbon\Carbon::parse($slot->start_time);
                   $end = \Carbon\Carbon::parse($slot->end_time);
-                  $isActive = true;
+                  $isActive = $now->between($start, $end);
               @endphp
 
               @if($isActive)

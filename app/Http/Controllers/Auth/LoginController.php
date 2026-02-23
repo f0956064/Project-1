@@ -53,7 +53,13 @@ class LoginController extends Controller
             return redirect()->intended($this->redirectTo);
         }
         $frontAuth = !request()->is('admin*');
-        return view($this->view, compact('frontAuth'));
+        
+        $data = compact('frontAuth');
+        if ($this->view === 'front.download') {
+            $data['games'] = \App\Models\GameLocation::where('is_active', 1)->get();
+        }
+        
+        return view($this->view, $data);
     }
     
     public function redirectTo()

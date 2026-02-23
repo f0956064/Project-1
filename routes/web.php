@@ -169,7 +169,8 @@ Route::get('customer/register', 'App\Http\Controllers\Auth\RegisterController@sh
 Route::post('customer/register', 'App\Http\Controllers\Auth\RegisterController@register')->name('customer.register.submit');
 
 Route::get('/', function() {
-    return view('front.download');
+    $games = \App\Models\GameLocation::where('is_active', 1)->get();
+    return view('front.download', compact('games'));
 })->name('download');
 
 Route::group(['middleware' => 'auth'], function () {
