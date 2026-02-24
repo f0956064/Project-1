@@ -77,7 +77,7 @@ class RegisterController extends Controller
                 return redirect()->back()->withInput($request->except('password', 'password_confirmation'))->withErrors($validator);
             }
             return redirect()->route('login')
-                ->with('error', 'User already exists. Please login to receive OTP again.');
+                ->with('error', 'User already exists. Please login.');
         }
 
         $initials = Helper::generateNameInitials($data['first_name'], $data['last_name']);
@@ -92,7 +92,7 @@ class RegisterController extends Controller
             'phone' => $phone,
             'password' => Hash::make($data['password']),
             'status' => 1,
-            'verified' => 0,
+            'verified' => 1,
             'name_initials' => $initials['name_initials'] ?? null,
             'name_initial_color_type' => $initials['name_initial_color_type'] ?? 1,
             'otp' => $otp,
@@ -109,11 +109,11 @@ class RegisterController extends Controller
             ['amount' => 0]
         );
 
-        OtpService::send($user, $otp);
+        // OtpService::send($user, $otp);
 
-        $request->session()->put('otp_verify_user_id', $user->id);
+        // $request->session()->put('otp_verify_user_id', $user->id);
 
-        return redirect()->route('otp.verify.form')->with('success', 'OTP sent to your email/phone. Please verify.');
+        return redirect()->route('customer.login')->with('success', 'User registered successfully. Please login.');
     }
 
     protected function validator(array $data)
