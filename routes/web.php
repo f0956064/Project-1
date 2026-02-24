@@ -42,7 +42,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'permission'], function () {
 	Route::group(['prefix' => 'permissions'], function () {
 		Route::get('manage_role/{id}', 'App\Http\Controllers\Admin\PermissionController@manageRole')->name('permissions.manage_role');
 		Route::post('menus/assign', 'App\Http\Controllers\Admin\PermissionController@setMenu')->name('permissions.assign.menu');
-		Route::patch('assign/{id}', "App\Http\Controllers\Admin\PermissionController@assignPermission")->name('permissions.assign');
+		Route::post('assign/{id}', "App\Http\Controllers\Admin\PermissionController@assignPermission")->name('permissions.assign');
 	});
 
 	Route::group(['prefix' => 'setting'], function () {
