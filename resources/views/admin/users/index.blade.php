@@ -1,7 +1,6 @@
 @php ($headerOption = [
 'title' => $module,
 'header_buttons' => [
-  '<a class="'. \Config::get('view.buttons.secondary') .'" href="'. route('export.users', Request::input()) .'" data-toggle="tooltip" data-original-title="Export Records"><i class="bx bx-download"></i></a>',
   ($permission['create'] ? '<a class="'. \Config::get('view.buttons.primary') .'" href="'. route($routePrefix . '.create') .'" data-toggle="tooltip" data-original-title="Add New Record">'. \Config::get('settings.icon_add') .' <span>Add New</span></a>' : ''),
 ],
 'filters' => isset($filters) ? $filters : [],

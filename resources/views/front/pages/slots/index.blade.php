@@ -31,9 +31,9 @@
               </p>
               
               @php
-                  $now = \Carbon\Carbon::now();
-                  $start = \Carbon\Carbon::parse($slot->start_time);
-                  $end = \Carbon\Carbon::parse($slot->end_time);
+                  $now = \Carbon\Carbon::now('Asia/Kolkata');
+                  $start = \Carbon\Carbon::parse($slot->start_time, 'Asia/Kolkata');
+                  $end = \Carbon\Carbon::parse($slot->end_time, 'Asia/Kolkata');
                   $isActive = $now->between($start, $end);
               @endphp
 
