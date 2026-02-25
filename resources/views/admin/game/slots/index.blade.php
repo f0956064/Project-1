@@ -34,7 +34,7 @@
               @php($logoFileModel = \App\Models\File::find($val->logo))
               @if($logoFileModel)
                 @php($logoFile = \App\Models\File::file($logoFileModel))
-                <img src="{{ $logoFile['thumb'] ?? $logoFile['original'] }}" alt="Logo" style="max-width: 50px; max-height: 50px;">
+                <img src="{{ $logoFile['original'] }}" alt="Logo" style="max-width: 50px; max-height: 50px;">
               @else
                 <span class="text-muted">No Logo</span>
               @endif
