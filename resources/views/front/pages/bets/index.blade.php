@@ -16,7 +16,7 @@
           @csrf
           <div class="form-group">
             <label for="guess">Guess</label>
-            <input type="number" id="guess" name="guess" value="{{ old('guess') }}" class="form-control{{ $errors->has('guess') ? ' is-invalid' : '' }}" required placeholder="Enter your guess">
+            <input type="number" id="guess" name="guess" value="{{ old('guess') }}" min="{{ $mode->min_bet }}" max="{{ $mode->max_bet }}" class="form-control{{ $errors->has('guess') ? ' is-invalid' : '' }}" required placeholder="Enter your guess ({{ (int)$mode->min_bet }} - {{ (int)$mode->max_bet }})">
             @if ($errors->has('guess'))
               <span class="help-block text-danger"><strong>{{ $errors->first('guess') }}</strong></span>
             @endif

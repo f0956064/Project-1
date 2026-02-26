@@ -44,7 +44,7 @@ class BetController extends Controller
         [$location, $slot, $mode] = $this->resolveGame($game_location_id, $game_slot_id, $game_mode_id);
 
         $request->validate([
-            'guess' => ['required', 'string', 'max:255'],
+            'guess' => ['required', 'numeric', 'min:' . $mode->min_bet, 'max:' . $mode->max_bet],
             'amount' => ['required', 'numeric', 'min:1'],
         ]);
 
