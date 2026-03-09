@@ -47,6 +47,12 @@ class UserWithdrawal extends Model
                 })
                 ->when(isset($srch_params['is_approved']), function ($q) use ($srch_params) {
                     return $q->where($this->table . '.is_approved', '=', $srch_params['is_approved']);
+                })
+                ->when(isset($srch_params['start_date']), function ($q) use ($srch_params) {
+                    return $q->whereDate($this->table . '.created_at', '>=', $srch_params['start_date']);
+                })
+                ->when(isset($srch_params['end_date']), function ($q) use ($srch_params) {
+                    return $q->whereDate($this->table . '.created_at', '<=', $srch_params['end_date']);
                 });
 
             if (isset($srch_params['id'])) {

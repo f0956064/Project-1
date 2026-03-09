@@ -13,7 +13,12 @@ class DashboardController extends Controller {
 				'#' => 'Dashboard',
 			];
 
-			$data['stats'] = $this->getStats();
+			$data['stats']      = $this->getStats();
+			$data['periodData'] = [
+				'daily'   => ['start' => now()->toDateString(), 'end' => now()->toDateString()],
+				'weekly'  => ['start' => now()->startOfWeek()->toDateString(), 'end' => now()->toDateString()],
+				'monthly' => ['start' => now()->startOfMonth()->toDateString(), 'end' => now()->toDateString()],
+			];
 
 			return view('admin.index', $data);
 		} catch (\Exception $e) {

@@ -66,66 +66,78 @@ $s = $stats[$activePeriod];
 {{-- Stats Cards Grid --}}
 <div class="row">
   <div class="col-sm-6 col-lg-4">
-    <div class="stat-card bg-deposit">
-      <div>
-        <div class="label">Total Deposits</div>
-        <div class="value">{{ number_format($s['deposit'], 2) }}</div>
+    <a href="{{ route('finance.deposits.index', ['start_date' => $periodData[$activePeriod]['start'], 'end_date' => $periodData[$activePeriod]['end']]) }}" class="text-decoration-none">
+      <div class="stat-card bg-deposit">
+        <div>
+          <div class="label">Total Deposits</div>
+          <div class="value">{{ number_format($s['deposit'], 2) }}</div>
+        </div>
+        <i class="bx bx-trending-up icon"></i>
       </div>
-      <i class="bx bx-trending-up icon"></i>
-    </div>
+    </a>
   </div>
 
   <div class="col-sm-6 col-lg-4">
-    <div class="stat-card bg-withdraw">
-      <div>
-        <div class="label">Total Withdrawals</div>
-        <div class="value">{{ number_format($s['withdrawal'], 2) }}</div>
+    <a href="{{ route('finance.withdrawals.index', ['start_date' => $periodData[$activePeriod]['start'], 'end_date' => $periodData[$activePeriod]['end']]) }}" class="text-decoration-none">
+      <div class="stat-card bg-withdraw">
+        <div>
+          <div class="label">Total Withdrawals</div>
+          <div class="value">{{ number_format($s['withdrawal'], 2) }}</div>
+        </div>
+        <i class="bx bx-trending-down icon"></i>
       </div>
-      <i class="bx bx-trending-down icon"></i>
-    </div>
+    </a>
   </div>
 
   <div class="col-sm-6 col-lg-4">
-    <div class="stat-card bg-bet">
-      <div>
-        <div class="label">Total Bets Collected</div>
-        <div class="value">{{ number_format($s['total_bet'], 2) }}</div>
+    <a href="{{ route('user-guesses.index', ['start_date' => $periodData[$activePeriod]['start'], 'end_date' => $periodData[$activePeriod]['end']]) }}" class="text-decoration-none">
+      <div class="stat-card bg-bet">
+        <div>
+          <div class="label">Total Bets Collected</div>
+          <div class="value">{{ number_format($s['total_bet'], 2) }}</div>
+        </div>
+        <i class="bx bx-dice-5 icon"></i>
       </div>
-      <i class="bx bx-dice-5 icon"></i>
-    </div>
+    </a>
   </div>
 
   <div class="col-sm-6 col-lg-4">
-    <div class="stat-card bg-winning">
-      <div>
-        <div class="label">Total Winnings Paid</div>
-        <div class="value">{{ number_format($s['winning'], 2) }}</div>
+    <a href="{{ route('game-winners.index', ['start_date' => $periodData[$activePeriod]['start'], 'end_date' => $periodData[$activePeriod]['end']]) }}" class="text-decoration-none">
+      <div class="stat-card bg-winning">
+        <div>
+          <div class="label">Total Winnings Paid</div>
+          <div class="value">{{ number_format($s['winning'], 2) }}</div>
+        </div>
+        <i class="bx bx-trophy icon"></i>
       </div>
-      <i class="bx bx-trophy icon"></i>
-    </div>
+    </a>
   </div>
 
   <div class="col-sm-6 col-lg-4">
     @php
-$profitClass = $s['profit'] >= 0 ? 'bg-profit-pos' : 'bg-profit-neg';
-@endphp
-    <div class="stat-card {{ $profitClass }}">
-      <div>
-        <div class="label">Net Profit (Bets − Winnings)</div>
-        <div class="value">{{ number_format($s['profit'], 2) }}</div>
+      $profitClass = $s['profit'] >= 0 ? 'bg-profit-pos' : 'bg-profit-neg';
+    @endphp
+    <a href="{{ route('reports.index', ['start_date' => $periodData[$activePeriod]['start'], 'end_date' => $periodData[$activePeriod]['end']]) }}" class="text-decoration-none">
+      <div class="stat-card {{ $profitClass }}">
+        <div>
+          <div class="label">Net Profit (Bets − Winnings)</div>
+          <div class="value">{{ number_format($s['profit'], 2) }}</div>
+        </div>
+        <i class="bx bx-bar-chart-alt-2 icon"></i>
       </div>
-      <i class="bx bx-bar-chart-alt-2 icon"></i>
-    </div>
+    </a>
   </div>
 
   <div class="col-sm-6 col-lg-4">
-    <div class="stat-card bg-users">
-      <div>
-        <div class="label">New Registrations</div>
-        <div class="value">{{ number_format($s['new_users']) }}</div>
+    <a href="{{ route('users.index', ['start_date' => $periodData[$activePeriod]['start'], 'end_date' => $periodData[$activePeriod]['end']]) }}" class="text-decoration-none">
+      <div class="stat-card bg-users">
+        <div>
+          <div class="label">New Registrations</div>
+          <div class="value">{{ number_format($s['new_users']) }}</div>
+        </div>
+        <i class="bx bx-user-plus icon"></i>
       </div>
-      <i class="bx bx-user-plus icon"></i>
-    </div>
+    </a>
   </div>
 </div>
 

@@ -62,6 +62,12 @@ class GameWinnerController extends Controller
         if (!empty($srch_params['date'])) {
             $query->whereDate('game_winners.date', $srch_params['date']);
         }
+        if (!empty($srch_params['start_date'])) {
+            $query->whereDate('game_winners.date', '>=', $srch_params['start_date']);
+        }
+        if (!empty($srch_params['end_date'])) {
+            $query->whereDate('game_winners.date', '<=', $srch_params['end_date']);
+        }
         if (!empty($srch_params['user_name'])) {
             $query->where(function ($q) use ($srch_params) {
                 $q->where('users.first_name', 'LIKE', '%' . $srch_params['user_name'] . '%')

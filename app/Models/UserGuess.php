@@ -66,6 +66,12 @@ class UserGuess extends Model
                 ->when(isset($srch_params['date']), function ($q) use ($srch_params) {
                     return $q->where($this->table . '.date', '=', $srch_params['date']);
                 })
+                ->when(isset($srch_params['start_date']), function ($q) use ($srch_params) {
+                    return $q->whereDate($this->table . '.date', '>=', $srch_params['start_date']);
+                })
+                ->when(isset($srch_params['end_date']), function ($q) use ($srch_params) {
+                    return $q->whereDate($this->table . '.date', '<=', $srch_params['end_date']);
+                })
                 ->when(isset($srch_params['game_location_id']), function ($q) use ($srch_params) {
                     return $q->where($this->table . '.game_location_id', '=', $srch_params['game_location_id']);
                 })

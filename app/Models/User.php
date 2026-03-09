@@ -273,6 +273,12 @@ class User extends Authenticatable {
 				->when(isset($srch_params['created_at']), function ($q) use ($srch_params) {
 					return $q->whereDate($this->table . ".created_at", $srch_params['created_at']);
 				})
+				->when(isset($srch_params['start_date']), function ($q) use ($srch_params) {
+					return $q->whereDate($this->table . ".created_at", '>=', $srch_params['start_date']);
+				})
+				->when(isset($srch_params['end_date']), function ($q) use ($srch_params) {
+					return $q->whereDate($this->table . ".created_at", '<=', $srch_params['end_date']);
+				})
 				->when(isset($srch_params['status']), function ($q) use ($srch_params) {
 					return $q->where($this->table . ".status", $srch_params['status']);
 				});
