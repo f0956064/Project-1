@@ -2,19 +2,6 @@
 
 @push('page_css')
 <style>
-  /* -------- Marquee / Notice bar -------- */
-  .notice-bar {
-    background: #1a0a2e;
-    color: #ffe600;
-    font-size: 0.85rem;
-    font-weight: 600;
-    overflow: hidden;
-    white-space: nowrap;
-    padding: 6px 0;
-    border-bottom: 2px solid #6a0dad;
-  }
-  .notice-bar marquee { display: block; }
-
   /* -------- Banner Slider -------- */
   .banner-slider {
     position: relative;
@@ -63,102 +50,6 @@
   .slider-dots span.active {
     background: #ffe600;
   }
-
-  /* -------- Quick Action Buttons -------- */
-  .home-actions {
-    display: flex;
-    gap: 10px;
-    margin: 12px 0;
-  }
-  .home-actions a {
-    flex: 1;
-    text-align: center;
-    padding: 11px 6px;
-    border-radius: 8px;
-    font-size: 0.9rem;
-    font-weight: 700;
-    text-decoration: none;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
-  }
-  .btn-add-balance {
-    background: #7c3aed;
-    color: #fff;
-    border: none;
-  }
-  .btn-add-balance:hover { background: #6d28d9; color: #fff; text-decoration: none; }
-  .btn-withdraw {
-    background: transparent;
-    color: #fff;
-    border: 2px solid rgba(255,255,255,0.5);
-  }
-  .btn-withdraw:hover { background: rgba(255,255,255,0.1); color: #fff; text-decoration: none; }
-
-  /* -------- Game Cards -------- */
-  .games-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 14px;
-    padding: 4px 0 80px;
-  }
-  .game-card {
-    background: var(--theme-card, #fff);
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.25);
-    text-align: center;
-  }
-  .game-card-logo {
-    width: 100%;
-    height: 110px;
-    object-fit: cover;
-  }
-  .game-card-logo-placeholder {
-    height: 110px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: linear-gradient(135deg, #1a0a2e 0%, #3b0068 100%);
-  }
-  .game-card-logo-placeholder span {
-    font-size: 2.2rem;
-    font-weight: 900;
-    color: #ffe600;
-    font-family: 'Roboto', sans-serif;
-    letter-spacing: 2px;
-  }
-  .game-card-body {
-    padding: 10px 10px 12px;
-  }
-  .game-card-name {
-    font-size: 1rem;
-    font-weight: 700;
-    color: var(--theme-text, #222);
-    margin: 0 0 4px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-  .game-card-sub {
-    font-size: 0.72rem;
-    color: var(--theme-text-muted, #888);
-    margin: 0 0 10px;
-  }
-  .game-card-play {
-    display: block;
-    background: #7c3aed;
-    color: #fff;
-    border-radius: 6px;
-    padding: 7px 0;
-    font-size: 0.85rem;
-    font-weight: 700;
-    text-decoration: none;
-    transition: background 0.2s;
-  }
-  .game-card-play:hover { background: #6d28d9; color: #fff; text-decoration: none; }
-  .game-card-play span { margin-right: 4px; }
 </style>
 @endpush
 
@@ -195,10 +86,10 @@
 {{-- Quick Action Buttons --}}
 @auth
 <div class="home-actions">
-  <a href="{{ route('front.wallet.deposit') }}" class="btn-add-balance">
+  <a href="{{ route('front.wallet.deposit') }}" class="btn-action">
     <span class="glyphicon glyphicon-usd"></span> Add Balance
   </a>
-  <a href="{{ route('front.wallet.withdraw') }}" class="btn-withdraw">
+  <a href="{{ route('front.wallet.withdraw') }}" class="btn-action btn-withdraw-action">
     <span class="glyphicon glyphicon-credit-card"></span> Withdraw Money
   </a>
 </div>
@@ -211,27 +102,36 @@
   </div>
 @elseif(isset($locations) && count($locations))
   <div class="games-grid">
-    @foreach($locations as $location)
+    @foreach($locations as $index => $location)
       @php
         $logo = null;
         if (!empty($location->logo) && isset($logos[$location->logo])) {
           $logo = \App\Models\File::file($logos[$location->logo]);
         }
-        // Build slot timing info if available
         $abbr = strtoupper(substr($location->name, 0, 2));
+        
+        // Define ring colors based on index or name
+        $colors = [
+            ['top' => '#3b82f6', 'right' => '#ec4899', 'bottom' => '#8b5cf6', 'left' => '#06b6d4'], // Blue/Pink/Purple/Cyan
+            ['top' => '#10b981', 'right' => '#f59e0b', 'bottom' => '#ef4444', 'left' => '#6366f1'], // Green/Orange/Red/Indigo
+            ['top' => '#f43f5e', 'right' => '#fbbf24', 'bottom' => '#22c55e', 'left' => '#0ea5e9'], // Rose/Amber/Green/Sky
+            ['top' => '#8b5cf6', 'right' => '#d946ef', 'bottom' => '#f43f5e', 'left' => '#14b8a6']  // Violet/Fuchsia/Rose/Teal
+        ];
+        $ringColor = $colors[$index % count($colors)];
       @endphp
-      <div class="game-card">
-        @if($logo && isset($logo['original']))
-          <img class="game-card-logo" src="{{ $logo['original'] }}" alt="{{ $location->name }}">
-        @else
-          <div class="game-card-logo-placeholder">
-            <span>{{ $abbr }}</span>
-          </div>
-        @endif
-        <div class="game-card-body">
-          <p class="game-card-name">{{ $location->name }}</p>
-          <a class="game-card-play" href="{{ route('front.game.slots', ['game_location_id' => $location->id]) }}">
-            <span>&#9654;</span> Play
+      <div class="game-item-card">
+        <div class="game-logo-wrapper">
+          <div class="game-logo-ring" style="border-top-color: {{ $ringColor['top'] }}; border-right-color: {{ $ringColor['right'] }}; border-bottom-color: {{ $ringColor['bottom'] }}; border-left-color: {{ $ringColor['left'] }};"></div>
+          @if($logo && isset($logo['original']))
+             <img src="{{ $logo['original'] }}" alt="{{ $location->name }}" style="width: 70%; height: 70%; object-fit: contain; z-index: 2; border-radius: 50%;">
+          @else
+             <span class="game-initials">{{ $abbr }}</span>
+          @endif
+        </div>
+        <div class="game-card-info">
+          <p class="game-name">{{ $location->name }}</p>
+          <a class="btn-play-now" href="{{ route('front.game.slots', ['game_location_id' => $location->id]) }}">
+            Play <span class="glyphicon glyphicon-circle-arrow-right"></span>
           </a>
         </div>
       </div>

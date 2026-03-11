@@ -18,7 +18,7 @@ class WalletController extends Controller
             ['user_id' => $request->user()->id],
             ['amount' => 0]
         );
-        $gameSettings = GameSetting::first();
+        $gameSettings = GameSetting::with('qrCode')->first();
 
         return view('front.pages.wallet.deposit', [
             'wallet' => $wallet,

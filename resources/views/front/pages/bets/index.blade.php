@@ -1,9 +1,20 @@
 @extends('front.layouts.app')
 
 @section('content')
-  <div class="page-header">
-    <p><a href="{{ route('front.game.modes', ['game_location_id' => $location->id, 'game_slot_id' => $slot->id]) }}" class="btn btn-default btn-sm" style="margin-bottom: 8px;">&larr; Back to Game Types</a></p>
-    <h3 style="margin-top: 0; color: var(--theme-primary);">Add Bet <small class="text-muted">({{ $location->name }} / {{ $slot->name }} / {{ $mode->name }})</small></h3>
+  <div class="page-header" style="margin-bottom: 20px;">
+    <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+      <div>
+        <p><a href="{{ route('front.game.modes', ['game_location_id' => $location->id, 'game_slot_id' => $slot->id]) }}" class="btn-action btn-sm" style="display: inline-flex; width: auto; padding: 6px 12px; margin-bottom: 15px;">&larr; Back to Game Types</a></p>
+        <h3 style="margin-top: 0; color: #000; font-weight: 800; font-size: 2.2rem;">Add Bet</h3>
+        <p class="text-muted" style="margin-top: -5px; font-weight: 600;">{{ $location->name }} / {{ $slot->name }} / {{ $mode->name }}</p>
+      </div>
+      <div style="text-align: right;">
+        <div id="countdown-timer" style="background: var(--theme-purple); color: #fff; padding: 8px 15px; border-radius: 12px; font-weight: 800; box-shadow: 0 4px 10px rgba(0,0,0,0.2);">
+          <div style="font-size: 0.8rem; text-transform: uppercase; opacity: 0.8; margin-bottom: 2px;">Ends In</div>
+          <div id="timer-display" style="font-size: 1.8rem; font-family: monospace;">--:--:--</div>
+        </div>
+      </div>
+    </div>
   </div>
 
   @include('admin.components.messages')
@@ -68,4 +79,47 @@
     </div>
   </div>
 @endsection
+
+@push('page_script')
+<script>
+(function() {
+    // Current server time in IST baseline
+    const serverTimestamp = {{ now('Asia/Kolkata')->timestamp * 1000 }};
+    const clientTimestamp = new Date().getTime();
+    const drift = serverTimestamp - clientTimestamp;
+
+    // End time directly as timestamp to avoid parsing issues
+    // Using current date since bets are for today's slots
+    const endTime = {{ \Carbon\Carbon::parse(date('Y-m-d') . ' ' . $slot->end_time, 'Asia/Kolkata')->timestamp * 1000 }};
+
+    const timerDisplay = document.getElementById('timer-display');
+
+    function updateTimer() {
+        // Adjust client time by drift to match server time
+        const now = new Date().getTime() + drift;
+        const distance = endTime - now;
+
+        if (distance < 0) {
+            timerDisplay.innerHTML = "EXPIRED";
+            timerDisplay.style.color = "#ff4d4d";
+            clearInterval(timerInterval);
+            return;
+        }
+
+        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        const hDisplay = hours < 10 ? "0" + hours : hours;
+        const mDisplay = minutes < 10 ? "0" + minutes : minutes;
+        const sDisplay = seconds < 10 ? "0" + seconds : seconds;
+
+        timerDisplay.innerHTML = hDisplay + ":" + mDisplay + ":" + sDisplay;
+    }
+
+    updateTimer();
+    const timerInterval = setInterval(updateTimer, 1000);
+})();
+</script>
+@endpush
 

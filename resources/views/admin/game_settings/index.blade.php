@@ -90,6 +90,42 @@
     <div class="col-lg-12">
         <div class="card">
             <div class="card-body">
+                <h4 class="card-title mb-4">Upload QR Code</h4>
+                <form action="{{ route('game-settings.update-qr-code') }}" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <div class="form-group text-center border p-3 bg-light rounded" style="min-height: 200px; display: flex; align-items: center; justify-content: center; flex-direction: column;">
+                                @if($data->qrCode)
+                                    <img src="{{ \App\Models\File::getFile($data->qrCode) }}" alt="QR Code" class="img-fluid rounded mb-2" style="max-height: 150px;">
+                                    <p class="text-success mb-0"><small>Current QR Code</small></p>
+                                @else
+                                    <div class="text-muted">
+                                        <i class="mdi mdi-qrcode-scan" style="font-size: 48px;"></i>
+                                        <p class="mb-0">No QR Code Uploaded</p>
+                                    </div>
+                                @endif
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="qr_code">Select QR Code Image</label>
+                                <input type="file" class="form-control" id="qr_code" name="qr_code" accept="image/*" required>
+                                <small class="text-muted">Max size: 2MB. Allowed formats: jpeg, png, jpg, gif, svg.</small>
+                            </div>
+                            <button type="submit" class="btn btn-primary w-md mt-3">Upload QR Code</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-body">
                 <h4 class="card-title mb-4">Home Banner Images</h4>
                 <form action="{{ route('game-settings.update-banner') }}" method="POST" enctype="multipart/form-data">
                     @csrf

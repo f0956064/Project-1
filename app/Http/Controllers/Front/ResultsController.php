@@ -13,35 +13,54 @@ class ResultsController extends Controller
 {
     public function index(Request $request)
     {
-        $wallet = UserWallet::firstOrCreate(
-            ['user_id' => $request->user()->id],
-            ['amount' => 0]
-        );
-
         $locations = GameLocation::where('is_active', 1)->orderBy('id')->get();
-        $resultsByLocation = [];
-        foreach ($locations as $loc) {
-            $slots = GameSlot::where('game_id', $loc->id)->where('is_active', 1)->orderBy('start_time')->get();
-            $slotResults = [];
-            foreach ($slots as $slot) {
-                $results = GameSlotResult::where('game_slot_id', $slot->id)
-                    ->orderBy('result_date', 'desc')
-                    ->limit(10)
-                    ->get();
-                $slotResults[] = [
-                    'slot' => $slot,
-                    'results' => $results,
-                ];
-            }
-            $resultsByLocation[] = [
-                'location' => $loc,
-                'slotResults' => $slotResults,
-            ];
-        }
+        
+        $logos = \App\Models\File::whereIn('id', $locations->pluck('logo')->filter()->unique()->values())
+            ->with('cdn')
+            ->get()
+            ->keyBy('id');
 
         return view('front.pages.results.index', [
-            'wallet' => $wallet,
-            'resultsByLocation' => $resultsByLocation,
+            'locations' => $locations,
+            'logos' => $logos,
+        ]);
+    }
+
+    public function show(Request $request, $location_id)
+    {
+        $location = GameLocation::where('id', $location_id)->where('is_active', 1)->firstOrFail();
+        
+        $slots = GameSlot::where('game_id', $location_id)
+            ->where('is_active', 1)
+            ->orderBy('id', 'asc') // Based on user preference for slot ordering
+            ->get();
+
+        $results = GameSlotResult::where('game_location_id', $location_id)
+            ->with(['slot', 'mode'])
+            ->where('result_date', '>=', now()->subDays(30)->format('Y-m-d'))
+            ->orderBy('result_date', 'desc')
+            ->get();
+
+        $groupedResults = [];
+        foreach ($results as $result) {
+            $date = $result->result_date;
+            $slotId = $result->game_slot_id;
+            $modeName = strtolower($result->mode->name);
+            
+            if (!isset($groupedResults[$date])) {
+                $groupedResults[$date] = [];
+            }
+            if (!isset($groupedResults[$date][$slotId])) {
+                $groupedResults[$date][$slotId] = [];
+            }
+            
+            $groupedResults[$date][$slotId][$modeName] = $result->result_value;
+        }
+
+        return view('front.pages.results.show', [
+            'location' => $location,
+            'slots' => $slots,
+            'groupedResults' => $groupedResults,
         ]);
     }
 }

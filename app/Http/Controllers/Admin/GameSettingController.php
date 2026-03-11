@@ -123,4 +123,36 @@ class GameSettingController extends Controller
             return redirect()->back()->with('error', 'Failed to delete banner.');
         }
     }
+
+    public function updateQrCode(Request $request)
+    {
+        $request->validate([
+            'qr_code' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
+        ]);
+
+        $gameSetting = GameSetting::first();
+        if (!$gameSetting) {
+            $gameSetting = GameSetting::create([
+                'id' => 1,
+                'show_games' => 1,
+                'deposit' => 1,
+                'withdrawal' => 1
+            ]);
+        }
+
+        // Delete existing QR code if any
+        \App\Models\File::deleteFiles([
+            'entity_type' => \App\Models\File::$fileType['qr_code']['type'],
+            'entity_id' => $gameSetting->id
+        ], true);
+
+        if ($request->hasFile('qr_code')) {
+            $file = \App\Models\File::upload($request, 'qr_code', 'qr_code', $gameSetting->id);
+            if ($file) {
+                return redirect()->back()->with('success', 'QR code updated successfully.');
+            }
+        }
+
+        return redirect()->back()->with('error', 'Failed to update QR code.');
+    }
 }

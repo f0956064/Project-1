@@ -68,6 +68,10 @@ class File extends Model {
 			'type' => 6,
 			'location' => 'h',
 		],
+		'qr_code' => [
+			'type' => 7,
+			'location' => 'q',
+		],
 	];
 
 	/**

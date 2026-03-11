@@ -253,6 +253,14 @@ class UserController extends Controller {
 							'min' => 0,
 						],
 					],
+					'amount' => [
+						'type' => 'number',
+						'label' => 'Wallet Balance',
+						'value' => isset($this->_data['data']->wallet->amount) ? $this->_data['data']->wallet->amount : 5,
+						'attributes' => [
+							'min' => 0,
+						],
+					],
 					'phone' => [
 						'type' => 'text',
 						'label' => 'Phone',

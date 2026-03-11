@@ -7,5 +7,6 @@
       @yield('content')
     </main>
     @include('front.components.scripts')
+    @stack('page_script')
   </body>
 </html>

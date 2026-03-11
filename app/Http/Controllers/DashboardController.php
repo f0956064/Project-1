@@ -9,9 +9,6 @@ class DashboardController extends Controller {
 	public function index() {
 		try {
 			$data = [];
-			$data['breadcrumb'] = [
-				'#' => 'Dashboard',
-			];
 
 			$data['stats']      = $this->getStats();
 			$data['periodData'] = [

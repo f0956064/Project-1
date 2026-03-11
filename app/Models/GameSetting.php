@@ -22,4 +22,9 @@ class GameSetting extends Model
     {
         return $this->hasMany(File::class, 'entity_id', 'id')->where('entity_type', File::$fileType['home_banner']['type']);
     }
+
+    public function qrCode()
+    {
+        return $this->hasOne(File::class, 'entity_id', 'id')->where('entity_type', File::$fileType['qr_code']['type']);
+    }
 }

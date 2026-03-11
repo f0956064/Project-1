@@ -90,53 +90,63 @@ class GameSlotResultController extends Controller
             }
         }
 
+        $fields = [
+            'game_location_id' => [
+                'type' => 'select',
+                'label' => 'Game Location',
+                'options' => $locations,
+                'value' => $id ? $data->game_location_id : null,
+                'attributes' => [
+                    'required' => true,
+                    'id' => 'game_location_id',
+                    'class' => 'form-control select2',
+                ],
+            ],
+            'game_slot_id' => [
+                'type' => 'select',
+                'label' => 'Game Slot',
+                'options' => $slots,
+                'value' => $id ? $data->game_slot_id : null,
+                'attributes' => [
+                    'required' => true,
+                    'id' => 'game_slot_id',
+                    'class' => 'form-control select2',
+                ],
+            ],
+        ];
+
+        if ($id) {
+            $fields['game_mode_id'] = [
+                'type' => 'select',
+                'label' => 'Game Mode',
+                'options' => $modes,
+                'value' => $data->game_mode_id,
+                'attributes' => [
+                    'required' => true,
+                    'id' => 'game_mode_id',
+                    'class' => 'form-control select2',
+                ],
+            ];
+            $fields['result_value'] = [
+                'type' => 'text',
+                'label' => 'Result Value',
+                'value' => $data->result_value,
+                'attributes' => [
+                    'required' => true,
+                ],
+            ];
+        } else {
+            $fields['game_modes_container'] = [
+                'type' => 'html',
+                'value' => '<div id="game_modes_container" class="row"></div>',
+            ];
+        }
+
         $form = [
             'route' => $this->_routePrefix . ($id ? '.update' : '.store'),
             'back_route' => route($this->_routePrefix . '.index'),
-            'include_scripts' => $this->getDependentDropdownScript(),
-            'fields' => [
-                'game_location_id' => [
-                    'type' => 'select',
-                    'label' => 'Game Location',
-                    'options' => $locations,
-                    'value' => $id ? $data->game_location_id : null,
-                    'attributes' => [
-                        'required' => true,
-                        'id' => 'game_location_id',
-                        'class' => 'form-control select2',
-                    ],
-                ],
-                'game_slot_id' => [
-                    'type' => 'select',
-                    'label' => 'Game Slot',
-                    'options' => $slots,
-                    'value' => $id ? $data->game_slot_id : null,
-                    'attributes' => [
-                        'required' => true,
-                        'id' => 'game_slot_id',
-                        'class' => 'form-control select2',
-                    ],
-                ],
-                'game_mode_id' => [
-                    'type' => 'select',
-                    'label' => 'Game Mode',
-                    'options' => $modes,
-                    'value' => $id ? $data->game_mode_id : null,
-                    'attributes' => [
-                        'required' => true,
-                        'id' => 'game_mode_id',
-                        'class' => 'form-control select2',
-                    ],
-                ],
-                'result_value' => [
-                    'type' => 'text',
-                    'label' => 'Result Value',
-                    'value' => $id ? $data->result_value : null,
-                    'attributes' => [
-                        'required' => true,
-                    ],
-                ],
-            ],
+            'include_scripts' => $this->getDependentDropdownScript($id),
+            'fields' => $fields,
         ];
 
         return view('admin.components.admin-form', compact('data', 'id', 'form', 'breadcrumb', 'module'));
@@ -147,18 +157,41 @@ class GameSlotResultController extends Controller
         $validationRules = [
             'game_location_id' => 'required',
             'game_slot_id' => 'required',
-            'game_mode_id' => 'required',
-            'result_value' => 'required',
         ];
+
+        if ($id) {
+            $validationRules['game_mode_id'] = 'required';
+            $validationRules['result_value'] = 'required';
+        } else {
+            $validationRules['results'] = 'required|array';
+        }
 
         $this->validate($request, $validationRules);
 
         $input = $request->all();
-        if (!$id) {
-            $input['result_date'] = date('Y-m-d');
+        $response = ['status' => 500, 'message' => 'Something went wrong.'];
+
+        if ($id) {
+            $response = $this->_model->store($input, $id);
+        } else {
+            $results = $request->input('results');
+            $location_id = $request->input('game_location_id');
+            $slot_id = $request->input('game_slot_id');
+            $result_date = date('Y-m-d');
+
+            foreach ($results as $mode_id => $value) {
+                if ($value !== null && $value !== '') {
+                    $this->_model->create([
+                        'game_location_id' => $location_id,
+                        'game_slot_id' => $slot_id,
+                        'game_mode_id' => $mode_id,
+                        'result_date' => $result_date,
+                        'result_value' => $value,
+                    ]);
+                }
+            }
+            $response = ['status' => 201, 'message' => 'Results have been successfully saved.'];
         }
-        
-        $response = $this->_model->store($input, $id);
 
         if (in_array($response['status'], [200, 201])) {
             return redirect()
@@ -185,7 +218,7 @@ class GameSlotResultController extends Controller
         return response()->json($modes);
     }
 
-    private function getDependentDropdownScript()
+    private function getDependentDropdownScript($id = '')
     {
         return '<script type="text/javascript">
             $(document).ready(function () {
@@ -193,7 +226,8 @@ class GameSlotResultController extends Controller
                     var locationId = $(this).val();
                     $("#game_slot_id").empty().append("<option value=\'\'>Select Slot</option>");
                     $("#game_mode_id").empty().append("<option value=\'\'>Select Mode</option>");
-                    
+                    $("#game_modes_container").empty();
+
                     if (locationId) {
                         $.ajax({
                             url: "' . route("get-slots-by-location") . '",
@@ -210,19 +244,41 @@ class GameSlotResultController extends Controller
 
                 $("#game_slot_id").change(function () {
                     var slotId = $(this).val();
-                    $("#game_mode_id").empty().append("<option value=\'\'>Select Mode</option>");
+                    var isEdit = "' . $id . '";
                     
-                    if (slotId) {
-                        $.ajax({
-                            url: "' . route("get-modes-by-slot") . '",
-                            type: "GET",
-                            data: { slot_id: slotId },
-                            success: function (data) {
-                                $.each(data, function (key, value) {
-                                    $("#game_mode_id").append("<option value=\'" + key + "\'>" + value + "</option>");
-                                });
-                            }
-                        });
+                    if (!isEdit) {
+                        $("#game_modes_container").empty();
+                        
+                        if (slotId) {
+                            $.ajax({
+                                url: "' . route("get-modes-by-slot") . '",
+                                type: "GET",
+                                data: { slot_id: slotId },
+                                success: function (data) {
+                                    $.each(data, function (key, value) {
+                                        var html = \'<div class="col-md-6 mb-3">\' +
+                                                   \'<label class="form-label">\' + value + \' Result</label>\' +
+                                                   \'<input type="text" name="results[\' + key + \']" class="form-control" required>\' +
+                                                   \'</div>\';
+                                        $("#game_modes_container").append(html);
+                                    });
+                                }
+                            });
+                        }
+                    } else {
+                        $("#game_mode_id").empty().append("<option value=\'\'>Select Mode</option>");
+                        if (slotId) {
+                            $.ajax({
+                                url: "' . route("get-modes-by-slot") . '",
+                                type: "GET",
+                                data: { slot_id: slotId },
+                                success: function (data) {
+                                    $.each(data, function (key, value) {
+                                        $("#game_mode_id").append("<option value=\'" + key + "\'>" + value + "</option>");
+                                    });
+                                }
+                            });
+                        }
                     }
                 });
             });

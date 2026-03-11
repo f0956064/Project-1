@@ -1,6 +1,5 @@
 @if(isset($breadcrumb))
 <ol class="breadcrumb m-0 mt-2 pt-3">
-  <li class="breadcrumb-item"><a href="{{ route('home') }}">Home</a></li>
   @php ($breadcrumbLimit = count($breadcrumb))
   @php ($currentBreadcrumb = 1)
   @foreach($breadcrumb as $key => $val)

@@ -18,6 +18,13 @@
           <p style="margin: 0; color: var(--theme-text-muted);">Deposits are currently disabled.</p>
         </div>
       @else
+      @if (isset($gameSettings) && $gameSettings->qrCode)
+        <div class="front-card" style="padding: 20px; margin-bottom: 20px; text-align: center;">
+          <h4 style="margin-top: 0; color: var(--theme-primary); margin-bottom: 15px;">Scan QR to Pay</h4>
+          <img src="{{ \App\Models\File::getFile($gameSettings->qrCode) }}" alt="Payment QR Code" style="max-width: 100%; height: auto; border-radius: 8px; border: 1px solid #eee;">
+        </div>
+      @endif
+
       <div class="front-card" style="padding: 20px;">
         <h4 style="margin-top: 0; color: var(--theme-primary);">Deposit Request</h4>
         <form method="POST" action="{{ route('front.wallet.deposit.store') }}">

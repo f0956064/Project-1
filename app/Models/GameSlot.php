@@ -89,7 +89,7 @@ class GameSlot extends Model
                     $listing->orderBy($key, $value);
                 }
             } else {
-                $listing->orderBy($this->table . '.id', 'DESC');
+                $listing->orderBy($this->table . '.id', 'ASC');
             }
 
             if (isset($srch_params['groupBy'])) {

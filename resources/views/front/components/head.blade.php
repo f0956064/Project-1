@@ -53,9 +53,9 @@
     <span class="icon glyphicon glyphicon-list" style="font-size: 22px;"></span>
     My Bet
   </a>
-  <a href="{{ route('front.menu') }}" class="{{ request()->routeIs('front.menu') ? 'active' : '' }}">
-    <span class="icon glyphicon glyphicon-th-list" style="font-size: 22px;"></span>
-    Menu
+  <a href="{{ route('front.results') }}" class="{{ request()->routeIs('front.results ') ? 'active' : '' }}">
+    <span class="icon glyphicon glyphicon-gift" style="font-size: 22px;"></span>
+    Results
   </a>
 </nav>
 

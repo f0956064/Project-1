@@ -43,9 +43,9 @@
 body.front-app {
   padding-top: var(--top-bar-height);
   padding-bottom: var(--bottom-nav-height);
-  background: linear-gradient(180deg, #fff59d 0%, var(--env-bg) 100%);
+  background: var(--theme-yellow);
   color: var(--text-primary);
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-family: 'Roboto', sans-serif;
 }
 
 /* ===================== TOP BAR ===================== */
@@ -69,12 +69,11 @@ body.front-app {
 }
 
 .front-topbar .brand {
-  font-size: 1rem;
-  font-weight: 600;
+  font-size: 1.1rem;
+  font-weight: 700;
   color: var(--text-on-purple);
-  /* White */
   text-decoration: none;
-  letter-spacing: 0.2px;
+  letter-spacing: 0.5px;
 }
 
 .front-topbar .btn-menu {
@@ -160,14 +159,12 @@ body.front-app {
 
 /* ===================== CONTENT CARDS ===================== */
 .front-card {
-  background: var(--glass-bg-strong);
-  /* Removed backdrop-filter as bg is opaque white */
-
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  border-radius: 20px;
-  padding: 18px;
-  margin-bottom: 18px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  background: #ffffff;
+  border: none;
+  border-radius: 12px;
+  padding: 12px;
+  margin-bottom: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 /* ===================== BOTTOM NAV ===================== */
@@ -314,4 +311,150 @@ body.front-app {
 
 .auth-card .front-card .text-center a:hover {
   text-decoration: underline;
+}
+
+/* ===================== NEW DESIGN COMPONENTS ===================== */
+
+.notice-bar {
+  background: #7c3aed;
+  /* Purple */
+  color: #ffffff !important;
+  padding: 8px 0;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.notice-bar marquee {
+  color: #ffffff !important;
+}
+
+.home-actions {
+  display: flex;
+  gap: 12px;
+  margin: 15px 0;
+}
+
+.btn-action {
+  flex: 1;
+  background: #7c3aed;
+  color: #fff !important;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 10px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 0.95rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.btn-action:hover,
+.btn-action:focus {
+  background: #6d28d9;
+  color: #fff !important;
+  text-decoration: none;
+}
+
+.btn-withdraw-action {
+  background: #ffffff;
+  color: #7c3aed !important;
+}
+
+.games-grid {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr !important;
+  gap: 12px !important;
+  padding-bottom: 20px !important;
+}
+
+.game-item-card {
+  /* background: #ffffff; */
+  border-radius: 12px;
+  padding: 8px;
+  text-align: center;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.game-logo-wrapper {
+  position: relative;
+  width: 60%;
+  aspect-ratio: 1/1;
+  background: #0a0a0a;
+  border-radius: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 6px;
+  overflow: hidden;
+  border: 3px solid #fff;
+}
+
+.game-logo-ring {
+  position: absolute;
+  width: 85%;
+  height: 85%;
+  border-radius: 50%;
+  border: 4px solid #fff;
+  border-top-color: #3b82f6;
+  /* Default neon blue */
+  border-right-color: #ec4899;
+  /* Default neon pink */
+  border-bottom-color: #8b5cf6;
+  border-left-color: #06b6d4;
+  box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.2);
+}
+
+.game-initials {
+  font-size: 2rem;
+  font-weight: 900;
+  background: linear-gradient(135deg, #3b82f6 0%, #ec4899 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-family: 'Roboto', sans-serif;
+}
+
+.game-name {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #000;
+  margin: 2px 0 1px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.game-rates {
+  font-size: 0.65rem;
+  color: #999;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.btn-play-now {
+  background: #7c3aed;
+  color: #fff !important;
+  border: none;
+  border-radius: 15px;
+  padding: 4px 12px;
+  font-size: 2rem;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  text-decoration: none;
+  transition: transform 0.2s;
+  width: 85%;
+  margin: 0 auto;
+  justify-content: center;
+}
+
+.btn-play-now:hover {
+  transform: translateY(-2px);
+  color: #fff !important;
+  text-decoration: none;
 }

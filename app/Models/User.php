@@ -481,11 +481,12 @@ class User extends Authenticatable {
 				// dd($userWallet);
 				if ($userWallet) {
 					$userWallet->max_withdrawal = $input['max_withdrawal'];
+					$userWallet->amount = $input['amount'] ?? 0;
 					$userWallet->save();
 				} else {
 					UserWallet::create([
 						'user_id' => $data->id,
-						'amount' => 0,
+						'amount' => $input['amount'] ?? 0,
 						'max_withdrawal' => $input['max_withdrawal'],
 					]);
 				}

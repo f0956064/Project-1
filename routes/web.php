@@ -149,6 +149,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'permission'], function () {
 	Route::post('game-settings/update', 'App\Http\Controllers\Admin\GameSettingController@update')->name('game-settings.update');
 	Route::post('game-settings/update-notice', 'App\Http\Controllers\Admin\GameSettingController@updateNotice')->name('game-settings.update-notice');
 	Route::post('game-settings/update-banner', 'App\Http\Controllers\Admin\GameSettingController@updateBanner')->name('game-settings.update-banner');
+	Route::post('game-settings/update-qr-code', 'App\Http\Controllers\Admin\GameSettingController@updateQrCode')->name('game-settings.update-qr-code');
 	Route::delete('game-settings/delete-banner/{id}', 'App\Http\Controllers\Admin\GameSettingController@deleteBanner')->name('game-settings.delete-banner');
 
 });
@@ -204,6 +205,7 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('game-timing', 'App\Http\Controllers\Front\GameTimingController@index')->name('front.game.timing');
 	Route::get('my-bet', 'App\Http\Controllers\Front\BetController@myBet')->name('front.my.bet');
 	Route::get('results', 'App\Http\Controllers\Front\ResultsController@index')->name('front.results');
+	Route::get('results/{location_id}', 'App\Http\Controllers\Front\ResultsController@show')->name('front.results.show');
 	Route::get('transaction-history', 'App\Http\Controllers\Front\TransactionHistoryController@index')->name('front.transaction.history');
 	Route::get('helpline', 'App\Http\Controllers\Front\HelplineController@index')->name('front.helpline');
 	Route::get('refer-and-earn', 'App\Http\Controllers\Front\ReferController@index')->name('front.refer');
@@ -215,5 +217,5 @@ Route::group(['middleware' => 'auth'], function () {
 Route::get('process-winners', 'App\Http\Controllers\GameWinnerProcessorController@process')->name('process.winners');
 
 Route::fallback(function () {
-	return view('404');
+	return redirect()->route('home');
 });
