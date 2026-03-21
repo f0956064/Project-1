@@ -91,6 +91,16 @@ class GameSlotResultController extends Controller
         }
 
         $fields = [
+            'result_date' => [
+                'type' => 'date',
+                'label' => 'Result Date',
+                'value' => $id ? $data->result_date : date('Y-m-d'),
+                'attributes' => [
+                    'required' => true,
+                    'id' => 'result_date',
+                    'class' => 'form-control',
+                ],
+            ],
             'game_location_id' => [
                 'type' => 'select',
                 'label' => 'Game Location',
@@ -169,6 +179,7 @@ class GameSlotResultController extends Controller
         $this->validate($request, $validationRules);
 
         $input = $request->all();
+        // dd($input);
         $response = ['status' => 500, 'message' => 'Something went wrong.'];
 
         if ($id) {
@@ -177,7 +188,8 @@ class GameSlotResultController extends Controller
             $results = $request->input('results');
             $location_id = $request->input('game_location_id');
             $slot_id = $request->input('game_slot_id');
-            $result_date = date('Y-m-d');
+            $result_date = $request->input('result_date');
+            $is_result_out = 0;
 
             foreach ($results as $mode_id => $value) {
                 if ($value !== null && $value !== '') {
@@ -187,6 +199,7 @@ class GameSlotResultController extends Controller
                         'game_mode_id' => $mode_id,
                         'result_date' => $result_date,
                         'result_value' => $value,
+                        'is_result_out' => $is_result_out,
                     ]);
                 }
             }

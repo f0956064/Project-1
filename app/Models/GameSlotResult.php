@@ -14,6 +14,7 @@ class GameSlotResult extends Model
         'game_mode_id',
         'result_date',
         'result_value',
+        'is_result_out'
     ];
 
     protected $hidden = [

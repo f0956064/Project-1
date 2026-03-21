@@ -34,7 +34,7 @@
             <td>{{ $val->mode ? $val->mode->name : $val->game_mode_id }}</td>
             <td>{{ $val->result_date }}</td>
             <td>{{ $val->result_value }}</td>
-            @if($permission['edit'])
+            @if($permission['edit'] && $val->is_result_out == 0)
             <td>
                 <a href="{{ route($routePrefix . '.edit', $val->id) }}" class="btn btn-sm btn-primary" data-toggle="tooltip" title="Edit"><i class="bx bx-edit"></i></a>
             </td>
