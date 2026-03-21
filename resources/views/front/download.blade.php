@@ -276,7 +276,7 @@
         </div>
 
         <!-- Available Games -->
-        <div class="games-section">
+        <!-- <div class="games-section">
             <h2 class="games-title">Available Games</h2>
             <div class="games-grid">
                 @foreach($games as $game)
@@ -286,7 +286,7 @@
                     <div class="game-card" style="grid-column: span 2;">Stay Tuned for More!</div>
                 @endif
             </div>
-        </div>
+        </div> -->
 
         <!-- Footer -->
         <div class="footer">

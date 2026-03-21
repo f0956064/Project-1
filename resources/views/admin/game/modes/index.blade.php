@@ -54,13 +54,11 @@
               <label for="is_active_{{ $val->id }}" data-on-label="Active" data-off-label="Inactive"></label>
             </div>
           </td>
-          @if($permission['edit'] || $permission['destroy'])
           <td class="text-right">
             @if($permission['edit'])
             <a href="{{ route('game.modes.edit', [$game_location_id, $game_slot_id, $val->id]) }}" class="{!! \Config::get('view.table.list_light_button') !!}" data-toggle="tooltip" title="" data-original-title="Edit">{!! \Config::get('settings.icon_edit') !!}</a>
             @endif
           </td>
-          @endif
         </tr>
          @endforeach
       @else

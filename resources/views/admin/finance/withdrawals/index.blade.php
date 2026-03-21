@@ -38,6 +38,7 @@
               @endif
             </td>
             <td>{{ $val->created_at }}</td>
+            @if($permission['edit'])
             <td class="text-right">
               @if((int) $val->is_approved === 0)
                 <form method="POST" action="{{ route('finance.withdrawals.approve', $val->id) }}" style="display:inline;">
@@ -54,6 +55,7 @@
                 </form>
               @endif
             </td>
+            @endif
           </tr>
         @endforeach
       @else

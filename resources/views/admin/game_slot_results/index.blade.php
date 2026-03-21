@@ -1,7 +1,7 @@
 @php ($headerOption = [
   'title' => $module,
   'header_buttons' => [
-    '<a href="'.route($routePrefix.'.create').'" class="btn btn-primary waves-effect">Add New</a>'
+    ($permission['create'] ? '<a href="'.route($routePrefix.'.create').'" class="btn btn-primary waves-effect">Add New</a>' : '')
   ],
   'filters' => isset($filters) ? $filters : [],
   'data'    => isset($data) ? $data : []
@@ -34,9 +34,11 @@
             <td>{{ $val->mode ? $val->mode->name : $val->game_mode_id }}</td>
             <td>{{ $val->result_date }}</td>
             <td>{{ $val->result_value }}</td>
+            @if($permission['edit'])
             <td>
                 <a href="{{ route($routePrefix . '.edit', $val->id) }}" class="btn btn-sm btn-primary" data-toggle="tooltip" title="Edit"><i class="bx bx-edit"></i></a>
             </td>
+            @endif
           </tr>
         @endforeach
       @else

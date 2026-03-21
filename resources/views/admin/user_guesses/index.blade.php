@@ -38,9 +38,11 @@
             <td>{{ $val->guess }}</td>
             <td>{{ $val->amount }}</td>
             <td>{{ $val->created_at }}</td>
+            @if($permission['edit'])
             <td>
               <a href="{{ route('admin.user_guesses.delete', $val->id) }}" class="btn btn-danger btn-sm">Delete</a>
             </td>
+            @endif
           </tr>
         @endforeach
       @else
