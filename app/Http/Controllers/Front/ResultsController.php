@@ -37,7 +37,7 @@ class ResultsController extends Controller
 
         $results = GameSlotResult::where('game_location_id', $location_id)
             ->with(['slot', 'mode'])
-            ->where('result_date', '>=', now()->subDays(30)->format('Y-m-d'))
+            ->where('is_result_out', 1)
             ->orderBy('result_date', 'desc')
             ->get();
 
