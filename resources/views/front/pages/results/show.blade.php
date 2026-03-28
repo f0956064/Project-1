@@ -89,36 +89,34 @@
         <h3 class="results-title">{{ $location->name }} Results</h3>
 
         <div class="tabs-wrapper">
-            <button class="tab-btn active" onclick="switchTab('single-patti', this)">Single / Patti</button>
+            <button class="tab-btn active" onclick="switchTab('single', this)">Single/Patti</button>
             <button class="tab-btn" onclick="switchTab('jodi', this)">Jodi</button>
         </div>
 
-        <!-- Single / Patti Tab Content -->
-        <div id="single-patti" class="tab-content active">
+        <!-- Single Tab Content -->
+        <div id="single" class="tab-content active">
             @forelse($groupedResults as $date => $slotsData)
                 <div class="date-section">
                     <p class="date-label">{{ \Carbon\Carbon::parse($date)->format('d F, Y') }}</p>
                     <div class="results-table-container">
                         <table class="results-table">
-                            <!-- Row 1: Single/CP -->
                             <tr>
                                 @foreach($slots as $slot)
                                     @php
                                         $val = '-';
                                         if (isset($slotsData[$slot->id])) {
-                                            $val = $slotsData[$slot->id]['cp'] ?? $slotsData[$slot->id]['cp'] ?? $slotsData[$slot->id]['single'] ?? '-';
+                                            $val = $slotsData[$slot->id][\App\Models\GameMode::TYPE_SINGLE] ?? '-';
                                         }
                                     @endphp
                                     <td>{{ $val }}</td>
                                 @endforeach
                             </tr>
-                            <!-- Row 2: Patti -->
                             <tr>
                                 @foreach($slots as $slot)
                                     @php
                                         $val = '-';
                                         if (isset($slotsData[$slot->id])) {
-                                            $val = $slotsData[$slot->id]['patti'] ?? '-';
+                                            $val = $slotsData[$slot->id][\App\Models\GameMode::TYPE_PATTI] ?? '-';
                                         }
                                     @endphp
                                     <td>{{ $val }}</td>
@@ -141,13 +139,12 @@
                     <p class="date-label">{{ \Carbon\Carbon::parse($date)->format('d F, Y') }}</p>
                     <div class="results-table-container">
                         <table class="results-table">
-                            <!-- Single Row: Jodi -->
                             <tr>
                                 @foreach($slots as $slot)
                                     @php
                                         $val = '-';
                                         if (isset($slotsData[$slot->id])) {
-                                            $val = $slotsData[$slot->id]['jodi'] ?? $slotsData[$slot->id]['jutti'] ?? '-';
+                                            $val = $slotsData[$slot->id][\App\Models\GameMode::TYPE_JODI] ?? '-';
                                         }
                                     @endphp
                                     <td>{{ $val }}</td>

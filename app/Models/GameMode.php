@@ -8,6 +8,16 @@ class GameMode extends Model
 {
     protected $table = 'game_modes';
 
+    const TYPE_SINGLE = 1;
+    const TYPE_PATTI = 2;
+    const TYPE_JODI = 3;
+
+    public static $types = [
+        self::TYPE_SINGLE => 'Single',
+        self::TYPE_PATTI => 'Patti',
+        self::TYPE_JODI => 'Jodi',
+    ];
+
     protected $fillable = [
         'slot_id',
         'name',

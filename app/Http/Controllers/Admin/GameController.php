@@ -612,6 +612,14 @@ class GameController extends Controller
                         'required'  => true
                     ]
                 ],
+                'type'      => [
+                    'type'          => 'select',
+                    'label'         => 'Game Type',
+                    'options'       => GameMode::$types,
+                    'attributes'    => [
+                        'required'  => true
+                    ]
+                ],
                 'win_amount'      => [
                     'type'          => 'number',
                     'label'         => 'Win Price(This will multiply with bet amount)',
@@ -653,6 +661,7 @@ class GameController extends Controller
     {
         $validationRules = [
             'name'          => 'required|max:255',
+            'type'          => 'required|in:' . implode(',', array_keys(\App\Models\GameMode::$types)),
         ];
 
         $this->validate($request, $validationRules);

@@ -45,7 +45,7 @@ class ResultsController extends Controller
         foreach ($results as $result) {
             $date = $result->result_date;
             $slotId = $result->game_slot_id;
-            $modeName = strtolower($result->mode->name);
+            $type = $result->mode->type;
             
             if (!isset($groupedResults[$date])) {
                 $groupedResults[$date] = [];
@@ -54,7 +54,7 @@ class ResultsController extends Controller
                 $groupedResults[$date][$slotId] = [];
             }
             
-            $groupedResults[$date][$slotId][$modeName] = $result->result_value;
+            $groupedResults[$date][$slotId][$type] = $result->result_value;
         }
 
         return view('front.pages.results.show', [
