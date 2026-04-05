@@ -26,6 +26,8 @@ class GameMode extends Model
         'win_amount',
         'min_bet',
         'max_bet',
+        'min_amount',
+        'max_amount',
         'digit_length',
         'logo',
         'is_active',

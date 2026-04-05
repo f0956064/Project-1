@@ -17,7 +17,6 @@
                 <th>Start Time</th>
                 <th>End Time</th>
                 <th>Result Time</th>
-                <th>Off Days</th>
               </tr>
             </thead>
             <tbody>
@@ -27,7 +26,6 @@
                   <td>{{ $slot->start_time ?? '-' }}</td>
                   <td>{{ $slot->end_time ?? '-' }}</td>
                   <td>{{ $slot->result_time ?? '-' }}</td>
-                  <td>{{ $slot->off_days ?? '-' }}</td>
                 </tr>
               @endforeach
             </tbody>

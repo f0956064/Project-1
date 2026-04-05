@@ -66,7 +66,7 @@ $s = $stats[$activePeriod];
 {{-- Stats Cards Grid --}}
 <div class="row">
   <div class="col-sm-6 col-lg-4">
-    <a href="{{ route('finance.deposits.index', ['start_date' => $periodData[$activePeriod]['start'], 'end_date' => $periodData[$activePeriod]['end']]) }}" class="text-decoration-none">
+    <a href="{{ route('user-deposits.index', ['start_date' => $periodData[$activePeriod]['start'], 'end_date' => $periodData[$activePeriod]['end']]) }}" class="text-decoration-none">
       <div class="stat-card bg-deposit">
         <div>
           <div class="label">Total Deposits</div>

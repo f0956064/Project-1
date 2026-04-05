@@ -643,6 +643,20 @@ class GameController extends Controller
                         'required'  => true
                     ]
                 ],
+                'min_amount'      => [
+                    'type'          => 'number',
+                    'label'         => 'Min Amount',
+                    'attributes'    => [
+                        'required'  => true
+                    ]
+                ],
+                'max_amount'      => [
+                    'type'          => 'number',
+                    'label'         => 'Max Amount',
+                    'attributes'    => [
+                        'required'  => true
+                    ]
+                ],
                 'logo'        => [
                     'type'          => 'file',
                     'label'         => 'Logo',

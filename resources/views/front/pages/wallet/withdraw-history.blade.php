@@ -34,6 +34,8 @@
                 <td>
                   @if((int) $w->is_approved === 1)
                     <span class="label label-success">Approved</span>
+                  @elseif((int) $w->is_approved === 2)
+                    <span class="label label-danger">Rejected</span>
                   @else
                     <span class="label label-warning">Pending</span>
                   @endif
