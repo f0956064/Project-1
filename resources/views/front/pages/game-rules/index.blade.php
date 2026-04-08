@@ -6,12 +6,13 @@
   </div>
 
   <div class="front-card" style="padding: 20px; margin-bottom: 20px;">
-    <h4 style="margin-top: 0; color: var(--theme-primary);">General</h4>
-    <ul style="margin-bottom: 0;">
-      <li>Minimum Deposit: {{ number_format((float) $minDeposit, 2) }}</li>
-      <li>Minimum Withdrawal: {{ number_format((float) $minWithdraw, 2) }}</li>
-      <li>Max Withdrawals Per Day: {{ $maxWithdrawalPerDay }}</li>
-    </ul>
+    <div style="font-weight: 500; line-height: 1.6;">
+        <div>1. Minimum Deposit-Rs.{{ number_format((float) $minDeposit, 0) }}</div>
+        <div>2. Minimum Withdraw-Rs.{{ number_format((float) $minWithdraw, 0) }}</div>
+        <div>3. Maximum withdrawal is {{ $maxWithdrawalPerDay }} times per day</div>
+        <div>এক ঘর এক পাত্তি খেলবেন না</div>
+        <div>শুধু পাত্তি খেলবেন না</div>
+    </div>
   </div>
 
   @if(!empty($rulesByLocation))
@@ -25,8 +26,8 @@
                 <th>Type</th>
                 <th class="text-right">Play</th>
                 <th class="text-right">Win</th>
-                <th class="text-right">Min Bet</th>
-                <th class="text-right">Max Bet</th>
+                <th class="text-right">Min Amount</th>
+                <th class="text-right">Max Amount</th>
               </tr>
             </thead>
             <tbody>
@@ -35,8 +36,8 @@
                   <td>{{ $m['type'] ?? '-' }}</td>
                   <td class="text-right">{{ number_format((float) ($m['play'] ?? 0), 2) }}</td>
                   <td class="text-right">{{ number_format((float) ($m['win'] ?? 0), 2) }}</td>
-                  <td class="text-right">{{ number_format((float) ($m['min_bet'] ?? 0), 2) }}</td>
-                  <td class="text-right">{{ number_format((float) ($m['max_bet'] ?? 0), 2) }}</td>
+                  <td class="text-right">{{ number_format((float) ($m['min_amount'] ?? 0), 2) }}</td>
+                  <td class="text-right">{{ number_format((float) ($m['max_amount'] ?? 0), 2) }}</td>
                 </tr>
               @endforeach
             </tbody>

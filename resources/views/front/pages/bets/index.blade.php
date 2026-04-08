@@ -34,7 +34,7 @@
           </div>
           <div class="form-group">
             <label for="amount">Amount</label>
-            <input type="number" step="0.01" min="1" id="amount" name="amount" value="{{ old('amount') }}" class="form-control{{ $errors->has('amount') ? ' is-invalid' : '' }}" required>
+            <input type="number" id="amount" name="amount" value="{{ old('amount') }}" class="form-control{{ $errors->has('amount') ? ' is-invalid' : '' }}" required min="{{ $mode->min_amount}}" max="{{$mode->max_amount}}" placeholder="Enter your guess ({{ (int)$mode->min_amount }} - {{ (int)$mode->max_amount }})">
             @if ($errors->has('amount'))
               <span class="help-block text-danger"><strong>{{ $errors->first('amount') }}</strong></span>
             @endif

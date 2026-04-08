@@ -52,7 +52,7 @@ class GameWinnerProcessorController extends Controller
                 // dd($slotEndTime);
                 $now = \Carbon\Carbon::now('Asia/Kolkata');
                 // dd($slotEndTime, $now);
-                if ($slotEndTime->lt($now)) {
+                // if ($slotEndTime->lt($now)) {
                     $winningGuesses = UserGuess::where('date', $result->result_date)
                         ->where('game_location_id', $result->game_location_id)
                         ->where('game_slot_id', $result->game_slot_id)
@@ -109,9 +109,9 @@ class GameWinnerProcessorController extends Controller
                     $result->update([
                         'is_result_out' => 1,
                     ]);
-                } else {
-                    $errors[] = "Slot time not reached for result ID {$result->id}.";
-                }
+                // } else {
+                //     $errors[] = "Slot time not reached for result ID {$result->id}.";
+                // }
             }
 
             return response()->json([

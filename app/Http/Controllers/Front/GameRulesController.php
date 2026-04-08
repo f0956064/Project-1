@@ -19,17 +19,18 @@ class GameRulesController extends Controller
         $locations = GameLocation::where('is_active', 1)->orderBy('id')->get();
         $rulesByLocation = [];
         foreach ($locations as $loc) {
-            $slots = GameSlot::where('game_id', $loc->id)->where('is_active', 1)->get();
+            $slot = GameSlot::where('game_id', $loc->id)->where('is_active', 1)->first();
             $modesBySlot = [];
-            foreach ($slots as $slot) {
+            if ($slot) {
                 $modes = GameMode::where('slot_id', $slot->id)->where('is_active', 1)->get();
                 foreach ($modes as $mode) {
+                    $modeType = GameMode::$types[$mode->type] ?? '';
                     $modesBySlot[] = [
-                        'type' => $mode->type ?? $mode->name,
-                        'play' => $mode->play_amount ?? 10,
-                        'win' => $mode->win_amount ?? 0,
-                        'min_bet' => $mode->min_bet ?? 5,
-                        'max_bet' => $mode->max_bet ?? 100,
+                        'type' => $modeType,
+                        'play' => 10,
+                        'win' => $mode->win_amount * 10,
+                        'min_amount' => $mode->min_amount ?? 5,
+                        'max_amount' => $mode->max_amount ?? 100,
                     ];
                 }
             }

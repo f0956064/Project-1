@@ -16,7 +16,6 @@
                 <th>Slot Name</th>
                 <th>Start Time</th>
                 <th>End Time</th>
-                <th>Result Time</th>
               </tr>
             </thead>
             <tbody>
@@ -25,7 +24,6 @@
                   <td>{{ $slot->name }}</td>
                   <td>{{ $slot->start_time ?? '-' }}</td>
                   <td>{{ $slot->end_time ?? '-' }}</td>
-                  <td>{{ $slot->result_time ?? '-' }}</td>
                 </tr>
               @endforeach
             </tbody>
