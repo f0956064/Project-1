@@ -31,7 +31,6 @@ class ResultsController extends Controller
         $location = GameLocation::where('id', $location_id)->where('is_active', 1)->firstOrFail();
         
         $slots = GameSlot::where('game_id', $location_id)
-            ->where('is_active', 1)
             ->orderBy('id', 'asc') // Based on user preference for slot ordering
             ->get();
 
